@@ -1,5 +1,14 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    if (!window.location.search.includes('v=')) {
+      const version = Date.now();
+      const url = window.location.origin + window.location.pathname + '?v=' + version;
+      window.location.replace(url);
+    }
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alborz Nazari — Cybersecurity Engineer</title>
