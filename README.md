@@ -1,10 +1,14 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <script>
-    if (!window.location.search.includes('v=')) {
-      const version = Date.now();
-      const url = window.location.origin + window.location.pathname + '?v=' + version;
-      window.location.replace(url);
+    // Force fresh load once, then silently clean the URL
+    const _v = Date.now();
+    if (!sessionStorage.getItem('cache_busted')) {
+      sessionStorage.setItem('cache_busted', _v);
+      fetch(window.location.href + '?_cb=' + _v, { cache: 'reload' }).then(() => {
+        history.replaceState(null, '', window.location.pathname);
+      });
     }
   </script>
 
