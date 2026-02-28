@@ -379,6 +379,91 @@
       box-shadow: 0 10px 26px rgba(0, 0, 0, 0.6);
     }
 
+    /* =============================
+       PROJECTS UI SECTION
+    ============================== */
+
+    .projects-panel {
+      background: linear-gradient(135deg, #ffffff, #f4f1ff);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+    }
+
+    .projects-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .project-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 18px;
+      border: 1px solid rgba(0,0,0,0.08);
+      transition: all 0.25s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.18);
+    }
+
+    .project-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #000;
+      margin-bottom: 8px;
+    }
+
+    .project-desc {
+      font-size: 0.92rem;
+      color: #222;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .project-link a {
+      display: inline-block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #9b5cff, #ff2e9f);
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .project-link a:hover { opacity: 0.85; }
+
+    .working-list {
+      margin-top: 22px;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .working-list strong {
+      color: #000;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .working-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .working-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      font-size: 0.9rem;
+      color: #111;
+    }
+
+    .working-list li:last-child { border-bottom: none; }
+
     /* Entrance animation */
     .card-main {
       opacity: 0;
@@ -518,6 +603,58 @@ open_to     : Cybersecurity engineering roles & collaborations
           </div>
         </section>
 
+        <!-- PROJECTS -->
+        <section class="section">
+          <div class="section-title">Projects I'm Working On</div>
+
+          <div class="projects-panel">
+
+            <div class="projects-grid">
+
+              <div class="project-card">
+                <div class="project-title">🔐 Secure Apportionment System</div>
+                <div class="project-desc">
+                  A secure apportionment system demonstrating the Huntington-Hill method with AES-256 encryption.
+                </div>
+                <div class="project-link">
+                  <a href="https://github.com/AlborzNazari/Secure-Apportionment-System">View Repository</a>
+                </div>
+              </div>
+
+              <div class="project-card">
+                <div class="project-title">🕵️ Open Intelligence Lab</div>
+                <div class="project-desc">
+                  Ethical OSINT research platform for threat modeling and explainable analytics.
+                </div>
+                <div class="project-link">
+                  <a href="https://github.com/AlborzNazari/open-intelligence-lab">View Repository</a>
+                </div>
+              </div>
+
+              <div class="project-card">
+                <div class="project-title">🛡️ ThreatBoard OSINT (MITRE)</div>
+                <div class="project-desc">
+                  Maps OSINT findings to MITRE ATT&amp;CK techniques on a visual threat board.
+                </div>
+                <div class="project-link">
+                  <a href="https://github.com/AlborzNazari/ThreatBoard_OSINT_MITRE">View Repository</a>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="working-list">
+              <strong>Currently Building:</strong>
+              <ul>
+                <li>🔐 Web App Scanner — Python, Burp API</li>
+                <li>🎥 Security VFX Series — Blender, After Effects</li>
+                <li>🛡️ Defensive Toolkit — Bash, Python</li>
+                <li>📝 CTF Writeups — Markdown</li>
+              </ul>
+            </div>
+
+          </div>
+        </section>
 
         <!-- ACTIVITY -->
         <section class="section">
