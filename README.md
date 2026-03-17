@@ -508,7 +508,7 @@
 
           <h1>Software Engineer → Cybersecurity Engineer</h1>
           <p class="subtitle">
-            Linux · Web App Security · Digital Forensics · 3D/VFX · Technical Writing
+            Linux · Web App Security · Digital Forensics · Graphical programming math · Technical Writing
           </p>
 
           <div class="badge-row">
@@ -531,24 +531,24 @@
 name        : Alborz Nazari
 role        : Software Engineer → Cybersecurity Engineer
 location    : España 
-status      : Building. Learning. Breaking things (ethically).
+status      : I am Fully employed right now, but at the same time looking to develop in a engineering role
 
 foundation  :
-  - Linux systems & engineering fundamentals
-  - Cybersecurity concepts (offensive + defensive)
-  - Technical problem-solving & systems thinking
+  - Linux systems & engineering fundamentals (Bachelor of Software Engineering)
+  - Cybersecurity concepts (offensive + defensive, ethically learning and testing new tools)
+  - Technical problem-solving & systems thinking: I entertain offer for private and public technology events! Keep in touch with me.
 
 unique_edge :
-  - 3D/VFX production → visual explainers for complex security topics
-  - Technical writing that makes hard things understandable
-  - Engineering mindset applied to security challenges
+  - Game industry & Publishing sector → Education in 3D applications in Barcelona and working at FunpLus
+  - Technical writing that makes hard things understandable: I analyzee possibilities.
+  - Engineering mindset applied to security challenges: Reading documents and CTF executive-ness and spokesman-like skills needed.
 
 currently   :
   - Developing hands-on cybersecurity projects on GitHub
   - Expanding into web application security & digital forensics
   - Building offensive/defensive security tooling
 
-open_to     : Cybersecurity engineering roles & collaborations
+open_to     : Cybersecurity engineering roles & collaborations, My camera is always hot!
               </pre>
             </div>
           </section>
@@ -562,7 +562,7 @@ open_to     : Cybersecurity engineering roles & collaborations
 ║   🕸️  Mastering  →  Web Application Security (OWASP Top 10)     ║
 ║   🔬  Practicing →  Digital Forensics & Incident Response        ║
 ║   🛠️  Building   →  Offensive / Defensive Security Tools         ║
-║   🎥  Creating   →  3D/VFX Visual Explainers for Security        ║
+║   🎥  Creating   →  Visual Explainers for Security        ║
 ║   📝  Writing    →  Clear Technical Security Documentation       ║
 ║   🏁  Targeting  →  CTF Competitions & Real-World Labs           ║
 ║                                                                  ║
