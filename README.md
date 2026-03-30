@@ -531,7 +531,7 @@
 name        : Alborz Nazari
 role        : Software Engineer → Cybersecurity Engineer
 location    : España 
-status      : I am Fully employed right now, but at the same time looking to develop in a engineering role
+status      : I am Fully employed right now, but at the same time looking to develop in an engineering role
 
 foundation  :
   - Linux systems & engineering fundamentals (Bachelor of Software Engineering)
@@ -547,8 +547,10 @@ currently   :
   - Developing hands-on cybersecurity projects on GitHub
   - Expanding into web application security & digital forensics
   - Building offensive/defensive security tooling
+  - Software Development
 
 open_to     : Cybersecurity engineering roles & collaborations, My camera is always hot!
+              see  my Calendly and appoint a meeting!
               </pre>
             </div>
           </section>
