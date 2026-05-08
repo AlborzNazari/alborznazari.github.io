@@ -161,25 +161,9 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--te
 .ring-svg{position:absolute;inset:0;width:100%;height:100%;}
 .ring-cw {animation:cw  38s linear infinite;}
 .ring-ccw{animation:ccw 26s linear infinite;}
-.sig-wrap{
-  position:absolute;
-  width:42%;
-  display:flex;align-items:center;justify-content:center;
-}
-.sig-wrap img{
-  width:100%;height:auto;
-  opacity:0;
-  transform:scale(0.92);
-  filter:blur(12px) drop-shadow(0 0 20px rgba(45,184,77,0.1));
-  transition:opacity 2.4s 0.6s cubic-bezier(0.4,0,0.2,1),
-             transform 2.6s 0.6s cubic-bezier(0.16,1,0.3,1),
-             filter 2.2s 0.6s cubic-bezier(0.4,0,0.2,1);
-}
-.sig-wrap img.in{
-  opacity:1;
-  transform:scale(1);
-  filter:blur(0px) drop-shadow(0 0 22px rgba(45,184,77,0.32));
-}
+.sig-wrap{position:absolute;width:42%;display:flex;align-items:center;justify-content:center;}
+.sig-wrap img{width:100%;height:auto;opacity:0;transform:scale(0.92);filter:blur(12px);transition:opacity 2.4s 0.6s ease,transform 2.6s 0.6s cubic-bezier(0.16,1,0.3,1),filter 2.2s 0.6s ease;}
+.sig-wrap img.in{opacity:1;transform:scale(1);filter:blur(0px);}
 .seal-label{
   margin-top:2rem;
   font-family:'JetBrains Mono',monospace;
