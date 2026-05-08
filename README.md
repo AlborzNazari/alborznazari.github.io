@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -642,7 +642,7 @@ footer p {
           <span class="stack-pill">OSINT</span>
           <span class="stack-pill">Alert Pipeline</span>
         </div>
-        <a href="https://github.com/AlborzNazari" target="_blank" class="project-link">View Repository</a>
+        <a href="https://github.com/AlborzNazari/Shadowbroker" target="_blank" class="project-link">View Repository</a>
       </div>
 
       <div class="project-card reveal">
@@ -669,7 +669,7 @@ footer p {
           <span class="stack-pill">Technical Writing</span>
           <span class="stack-pill">Systems Design</span>
         </div>
-        <a href="https://medium.com/@alborznazari4" target="_blank" class="project-link">Read on Medium</a>
+        <a href="https://medium.com/@alborznazari4/threading-the-needle-race-conditions-atomic-violations-and-the-concurrency-flaws-that-break-b7bfdc2f7993" target="_blank" class="project-link">Read on Medium</a>
       </div>
 
     </div>
@@ -757,7 +757,7 @@ footer p {
       <a href="mailto:alborznazari4@gmail.com" class="contact-link">✉ Email</a>
       <a href="https://github.com/AlborzNazari" target="_blank" class="contact-link">⌥ GitHub</a>
       <a href="https://linkedin.com/in/AlborzNazari" target="_blank" class="contact-link">◈ LinkedIn</a>
-      <a href="https://medium.com/@alborznazari4" target="_blank" class="contact-link">◎ Medium</a>
+      <a href="https://medium.com/@alborznazari4/threading-the-needle-race-conditions-atomic-violations-and-the-concurrency-flaws-that-break-b7bfdc2f7993" target="_blank" class="contact-link">◎ Medium</a>
     </div>
   </div>
 </section>
