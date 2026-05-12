@@ -234,7 +234,8 @@ footer p{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--tm)
     <h2 class="sh rv">Engineer who builds<br>and <span style="color:var(--g)">secures.</span></h2>
     <div class="ag">
       <div class="at rv">
-        <p>Software engineer turned cybersecurity specialist. I build threat intelligence platforms, OSINT tools, and security pipelines from scratch — then harden them with real test suites and CI/CD security gates.</p>
+        <p>Mathematics and computer science do not cease to exist. New technologies emerge, and the curiosity to understand logic becomes the most durable skill you can carry. I have worked with thousands of international clients and learned how people communicate, how they think, and how they approach problems. That experience taught me to connect things others keep separate and to bring analytical clarity to DevSecOps, threat intelligence, and software development.
+I ran the gamut from technical art, VFX, DCC tools, and development. Studied for a B.Sc. in Computer Engineering, and built original systems from scratch. During my studies at FX Barcelona, I worked at FunPlus in the gaming industry in Barcelona and found a lively and supportive community.</p>
         <p>My background spans <strong>3D pipeline engineering</strong> at Left Mountains and FunPlus, an <strong>M.Sc. from FX Barcelona</strong>, and a <strong>B.Sc. in Computer Engineering</strong> from BNUT. I bring systems thinking from production VFX pipelines into security engineering.</p>
         <p>Full EU work authorization. Based in Barcelona.</p>
       </div>
