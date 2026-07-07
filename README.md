@@ -311,7 +311,7 @@ I ran the gamut from 3D technical art, VFX, and DCC tools. Studied for a B.Sc. i
         <div class="pd">Graph-based cyber threat intelligence platform. STIX 2.1 + TAXII 2.1 compliant. Integrates MISP live feeds, MITRE ATT&CK, and SIEM connectors for Splunk, Sentinel, QRadar, and OpenCTI. 116-test pytest suite, deployed on Fly.io with full CI/CD. Rebuilt on GitLab as a transparent, modular, fully open-source model.</div>
         <div class="ps"><span class="pi">FastAPI</span><span class="pi">NetworkX</span><span class="pi">STIX 2.1</span><span class="pi">TAXII</span><span class="pi">MISP</span><span class="pi">Docker</span><span class="pi">GitLab CI</span><span class="pi">Fly.io</span></div>
         <div class="plr">
-          <a href="https://gitlab.com/alborznazari4/open-intelligence-lab" target="_blank" class="pl">Repository</a>
+          <a href="https://github.com/AlborzNazari/open-intelligence-lab" target="_blank" class="pl">Repository</a>
           <a href="https://medium.com/@alborznazari4/open-intelligence-lab-on-git-from-a-black-box-to-a-transparent-modular-and-open-source-model-ffa154962964" target="_blank" class="pl">Writeup</a>
         </div>
       </div>
