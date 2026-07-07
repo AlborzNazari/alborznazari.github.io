@@ -152,6 +152,7 @@ section{position:relative;z-index:1;}
 .wbody .wmeta{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--g);letter-spacing:.12em;margin-bottom:.6rem;}
 .wbody .wtitle{font-size:1.15rem;font-weight:700;line-height:1.4;margin-bottom:.55rem;color:var(--tx);}
 .wbody .wdesc{font-size:.86rem;color:var(--td);line-height:1.7;max-width:640px;}
+.wextra{margin-top:.9rem;}
 .wlink{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--g);text-decoration:none;letter-spacing:.08em;white-space:nowrap;padding-top:.15rem;transition:opacity .2s;}
 .wlink:hover{opacity:.7;}
 .wlink::after{content:' →';}
@@ -353,6 +354,9 @@ I ran the gamut from 3D technical art, VFX, and DCC tools. Studied for a B.Sc. i
           <p class="wmeta">LANGUAGE DESIGN · SECURITY ANALYSIS · JUL 2026</p>
           <p class="wtitle">Lox Under the Microscope: Design Trade-offs, Measurable Faults, and What Real Languages Do Differently</p>
           <p class="wdesc">A three-chapter deep dive into interpreter design using Lox from Crafting Interpreters as the lens — typing, memory management, mutability, and macros, followed by static analysis (SpotBugs, cppcheck), fuzzing, and AFL++ against jlox and clox to see where a toy language's design choices become real attack surfaces.</p>
+          <div class="plr wextra">
+            <a href="https://github.com/AlborzNazari/Robert_Nystrom_craftinginterpreters" target="_blank" class="pl">Repository</a>
+          </div>
         </div>
         <a href="https://medium.com/@alborznazari4/lox-under-the-microscope-design-trade-offs-measurable-faults-and-what-real-languages-do-e01637e5fd7f" target="_blank" class="wlink">Read</a>
       </div>
@@ -363,6 +367,9 @@ I ran the gamut from 3D technical art, VFX, and DCC tools. Studied for a B.Sc. i
           <p class="wmeta">INCIDENT REPORT · SUPPLY CHAIN · MAY 2026</p>
           <p class="wtitle">Thundering Herd via Inherited Scheduler: How My Fork Became Someone Else's Threat Feed</p>
           <p class="wdesc">A live incident write-up: an inherited hardcoded scheduler in a forked OSINT repo synchronized thousands of independent machines onto a single endpoint at the same second each day, producing a DDoS-shaped signature and a supply-chain attribution failure — plus the five-line jitter fix and the patches applied along the way.</p>
+          <div class="plr wextra">
+            <a href="https://github.com/AlborzNazari/Shadowbroker/releases" target="_blank" class="pl">Releases</a>
+          </div>
         </div>
         <a href="https://medium.com/@alborznazari4/thundering-herd-via-inherited-scheduler-how-my-fork-became-someone-elses-threat-feed-584db81a8ae4" target="_blank" class="wlink">Read</a>
       </div>
@@ -373,6 +380,9 @@ I ran the gamut from 3D technical art, VFX, and DCC tools. Studied for a B.Sc. i
           <p class="wmeta">CONCURRENCY · SYSTEMS DESIGN</p>
           <p class="wtitle">Threading the Needle: Race Conditions, Atomic Violations, and the Concurrency Flaws That Break Systems</p>
           <p class="wdesc">A technical article on race conditions built from first principles — TOCTOU, atomicity violations, GIL internals, and mutex design — grounded in a companion Vault Heist Simulator that demonstrates the same failure both by design and by bug.</p>
+          <div class="plr wextra">
+            <a href="https://github.com/AlborzNazari/SECURE_ATM_BANK_SYSTEM/tree/main/atm-bank" target="_blank" class="pl">Repository</a>
+          </div>
         </div>
         <a href="https://medium.com/@alborznazari4/threading-the-needle-race-conditions-atomic-violations-and-the-concurrency-flaws-that-break-b7bfdc2f7993" target="_blank" class="wlink">Read</a>
       </div>
