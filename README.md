@@ -7,7 +7,7 @@
 <meta property="og:title" content="Alborz Nazari">
 <meta property="og:description" content="Cybersecurity engineer, 3D artist and writer in Barcelona.">
 <meta property="og:url" content="https://alborznazari.github.io/">
-<style>*,*::before,*::after{box-sizing:border-box}html,body{margin:0}img{max-width:100%}</style>
+<style>*,*::before,*::after{box-sizing:border-box}html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Alborz Nazari</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,6 +31,19 @@
 html{background:var(--ink)}
 body{background:var(--ink);color:var(--bone);font-family:var(--body);font-size:18px;line-height:1.6;overflow-x:hidden}
 a{color:inherit}
+
+/* guard: stop any Jekyll/GitHub Pages theme CSS from restyling this page */
+html body{font-family:var(--body)!important;font-size:18px;line-height:1.6;color:var(--bone);background:var(--ink);max-width:none;padding:0;margin:0}
+html body :is(h1,h2,h3,h4){border:0!important;padding:0;letter-spacing:normal;background:none;font-weight:400}
+html body :is(p,li,dd,dt,figcaption,small,span,ul,ol,dl){font-family:inherit}
+html body :is(ul,ol){margin-block:0}
+html body a{text-shadow:none;background:none}
+html body code{background:rgba(14,9,11,.7);color:var(--bone);font-family:var(--mono);border-radius:0}
+html body button{font-family:var(--mono)}
+html body header.booth{position:fixed;margin:0;width:auto;float:none;border:0}
+html body main{max-width:none;float:none;width:auto}
+html body section{max-width:none;float:none;width:auto;margin:0}
+@media (max-width:820px){html body{font-size:17px}}
 ::selection{background:var(--waters);color:var(--ink)}
 :focus-visible{outline:2px solid var(--vhs);outline-offset:3px}
 
@@ -545,10 +558,11 @@ let lift=0;
 
 /* ---------- 2: the museum vitrine (unchanged) ---------- */
 const g2=stage(2);
+const vitrine=new THREE.Group();vitrine.rotation.x=.34;vitrine.position.set(0,.35,-.6);g2.add(vitrine);
 const pinkL=new THREE.PointLight(0xff3f8e,2.2,9);pinkL.position.set(0,2.6,2.5);g2.add(pinkL);
 const fleshL=new THREE.PointLight(0xe98a74,1.2,9);fleshL.position.set(-3,.5,2);g2.add(fleshL);
-const floor=new THREE.Mesh(new THREE.CircleGeometry(3.4,64),new THREE.MeshStandardMaterial({color:0x2a0612,roughness:1}));
-floor.rotation.x=-Math.PI/2;floor.position.y=-1.2;g2.add(floor);
+const floor=new THREE.Mesh(new THREE.CircleGeometry(3.4,64),new THREE.MeshStandardMaterial({color:0x14030a,roughness:.95}));
+floor.rotation.x=-Math.PI/2;floor.position.y=-1.2;vitrine.add(floor);
 const exhibits=[
   ['Exhibit A','Rapport','Strangers walk in curious and a little shy. The first ten seconds decide the next ten minutes.'],
   ['Exhibit B','Tact','The subject is adult. The tone never has to be crude. Humor carries the weight.'],
@@ -561,9 +575,9 @@ const exObjs=[];
 const pedMat=new THREE.MeshStandardMaterial({color:0x3a0a18,roughness:.9});
 exGeos.forEach((geo,i)=>{
   const a=(i-2)*0.55;const x=Math.sin(a)*2.3,z=-Math.cos(a)*2.3+2.1;
-  const ped=new THREE.Mesh(new THREE.CylinderGeometry(.3,.36,1.1,24),pedMat);ped.position.set(x,-.65,z);g2.add(ped);
+  const ped=new THREE.Mesh(new THREE.CylinderGeometry(.3,.36,1.1,24),pedMat);ped.position.set(x,-.65,z);vitrine.add(ped);
   const o=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0xff3f8e,metalness:.55,roughness:.22,emissive:0x2a0010}));
-  o.position.set(x,.3,z);o.userData={i,base:.3,hover:0};g2.add(o);exObjs.push(o);
+  o.position.set(x,.3,z);o.userData={i,base:.3,hover:0};vitrine.add(o);exObjs.push(o);
 });
 const plEx=document.getElementById('plEx'),plT=document.getElementById('plT'),plD=document.getElementById('plD');
 let lastEx=-1;
@@ -962,7 +976,7 @@ const petals=new THREE.Points(petalGeo,new THREE.PointsMaterial({color:0xff7fae,
 const targets=[document.getElementById('reel-0'),...document.querySelectorAll('.win'),document.getElementById('credits')];
 const FOVH=2*9*Math.tan(THREE.MathUtils.degToRad(20));
 // [height, width] each scene needs in world units at scale 1
-const dims=[null,[5.6,5.6],[4.3,5.4],[5.2,5.8],[2.45,3.15],[4.9,7.2],null];
+const dims=[null,[5.6,5.6],[4.6,5.8],[5.2,5.8],[2.45,3.15],[4.9,7.2],null];
 const rects=[];
 function resize(){const w=innerWidth,h=innerHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();}
 addEventListener('resize',resize);resize();
