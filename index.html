@@ -165,6 +165,62 @@ main{position:relative;z-index:3;padding-inline:clamp(16px,5vw,80px)}
 .soon a{color:rgba(241,230,216,.6)}
 .fin{font-family:var(--body);font-style:italic;color:var(--bone-dim)}
 
+
+/* ===== hero console ===== */
+.hero{position:relative;user-select:none;-webkit-user-select:none}
+body.on-hero .reels{opacity:0;visibility:hidden}
+.reels{transition:opacity .3s,visibility .3s}
+.rack{position:absolute;z-index:4;top:calc(env(safe-area-inset-top,0px) + 58px);right:0;width:282px;max-height:calc(100vh - 70px);overflow:auto;overscroll-behavior:contain;
+  background:rgba(12,8,10,.8);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(241,230,216,.16);
+  font-family:var(--mono);color:var(--bone);scrollbar-width:thin;scrollbar-color:rgba(255,63,142,.5) transparent;user-select:none;-webkit-user-select:none}
+.rack .rack-slate{display:flex;justify-content:space-between;gap:.5rem;padding:.45rem .8rem;background:var(--bone);color:var(--ink);font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  background-image:repeating-linear-gradient(-45deg,transparent 0 12px,rgba(14,9,11,.08) 12px 24px);position:sticky;top:0;z-index:1}
+.rack .rack-slate em{font-style:normal;color:#b0145a}
+.rack-head{padding:.5rem .8rem .2rem;display:flex;align-items:baseline;justify-content:space-between;gap:.5rem}
+.rack-head strong{font-family:var(--display);font-weight:400;font-size:1.4rem;line-height:1;color:var(--waters);letter-spacing:0}
+.rack-head span{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--bone-dim)}
+.ctls{padding:0 .8rem .4rem}
+.ctl{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:1px 8px;padding-block:4px;border-bottom:1px solid rgba(241,230,216,.08)}
+.ctl > :is(input,.seg,.sw,.pad-wrap,.tools,.pair){grid-column:1/-1}
+.ctl label,.ctl .lab{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--bone-dim);display:flex;gap:.5rem;align-items:baseline}
+.ctl i{font-style:normal;color:var(--waters);font-size:10px}
+.ctl output{font-size:11px;color:var(--bone);font-variant-numeric:tabular-nums;text-align:right}
+.rack input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:15px;background:transparent;margin:0;cursor:pointer;--p:50%}
+.rack input[type=range]::-webkit-slider-runnable-track{height:2px;background:linear-gradient(to right,var(--waters) var(--p),rgba(241,230,216,.22) var(--p))}
+.rack input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:9px;height:16px;margin-top:-7px;background:var(--bone);border:0;clip-path:polygon(50% 0,100% 32%,100% 100%,0 100%,0 32%)}
+.rack input[type=range]::-moz-range-track{height:2px;background:rgba(241,230,216,.22)}
+.rack input[type=range]::-moz-range-progress{height:2px;background:var(--waters)}
+.rack input[type=range]::-moz-range-thumb{width:9px;height:16px;border:0;border-radius:0;background:var(--bone)}
+.rack input[type=range]:focus-visible{outline:1px solid var(--vhs);outline-offset:2px}
+.seg{display:flex;flex-wrap:wrap;gap:3px}
+.seg button,.tools button,.pair button{flex:1 1 auto;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone-dim);
+  background:transparent;border:1px solid rgba(241,230,216,.22);padding:.28rem .3rem;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.seg button:hover,.tools button:hover,.pair button:hover{color:var(--bone);border-color:var(--bone-dim)}
+.seg button[aria-pressed="true"],.tools button[aria-pressed="true"]{background:var(--waters);border-color:var(--waters);color:var(--ink)}
+.sw{display:flex;gap:7px;align-items:center}
+.sw button{width:22px;height:22px;border-radius:50%;border:1px solid rgba(241,230,216,.3);cursor:pointer;padding:0;box-shadow:inset 0 -6px 8px rgba(0,0,0,.35)}
+.sw button[aria-pressed="true"]{outline:2px solid var(--bone);outline-offset:2px}
+.pair{display:flex;gap:6px;align-items:center}
+.pair input{flex:1}
+.pair button{flex:0 0 auto}
+.pad-wrap{display:flex;flex-direction:column;gap:4px}
+.pad{position:relative;height:52px;border:1px solid rgba(241,230,216,.22);cursor:crosshair;touch-action:none;
+  background:radial-gradient(circle at var(--lx,70%) var(--ly,20%),rgba(255,240,230,.35),rgba(255,63,142,.08) 35%,transparent 60%),
+  repeating-linear-gradient(0deg,transparent 0 11px,rgba(241,230,216,.06) 11px 12px),repeating-linear-gradient(90deg,transparent 0 11px,rgba(241,230,216,.06) 11px 12px)}
+.pad b{position:absolute;left:var(--lx,70%);top:var(--ly,20%);width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#fff4ea;box-shadow:0 0 12px 3px rgba(255,220,200,.8)}
+.pad:focus-visible{outline:1px solid var(--vhs);outline-offset:2px}
+.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}
+.tools button{padding:.34rem .2rem}
+.tools .reset{grid-column:span 1;color:var(--flesh);border-color:rgba(233,138,116,.45)}
+.rack-foot{display:flex;justify-content:space-between;gap:.5rem;padding:.4rem .8rem .5rem;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-dim)}
+.rack-foot b{color:var(--waters);font-weight:500;font-variant-numeric:tabular-nums}
+.tip{font-size:10px;letter-spacing:.06em;color:var(--bone-dim);text-transform:none;line-height:1.4}
+@media (min-width:961px){.hero{padding-right:calc(282px + clamp(1rem,3vw,2.5rem))}}
+@media (max-width:960px){
+  .rack{position:relative;top:auto;right:auto;width:100%;max-height:none;margin-top:.8rem}
+  .ctls{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));column-gap:18px}
+}
+
 @media (max-width:960px){
   .reel,.reel.right{grid-template-columns:minmax(0,1fr);padding-block:9vh 7vh;padding-right:0;gap:1rem}
   .win{position:relative;top:auto;height:clamp(300px,56vh,540px);order:-1}
@@ -213,13 +269,60 @@ main{position:relative;z-index:3;padding-inline:clamp(16px,5vw,80px)}
   <h1>Alborz<br>Nazari</h1>
   <p class="billing">Starring <strong>Alborz Nazari</strong> as the security engineer, the 3D artist, the pipeline engineer, the museum salesman, the writer and the red teamer</p>
   <p class="lede">A cybersecurity engineer who came to security by way of visual effects, video games and the shop floor of a very unusual museum. Scroll to roll film.</p>
-  <span class="hint">Touch the flesh. Press down to go deeper.</span>
+  <span class="hint">Hold and play. Pick a tool in the console, then press on the specimen.</span>
   <div class="marquee" aria-label="Influences">
     <div>
       <b>In the tradition of</b><span>David Cronenberg</span><span>Alejandro Jodorowsky</span><span>Pier Paolo Pasolini</span><span>John Waters</span><span>Divine</span><span>Harmony Korine</span><span>Karen Walton</span><span>Tom Six</span><span>queer and cult cinema</span><span>dark comedy with blunt corners</span>
       <b>In the tradition of</b><span>David Cronenberg</span><span>Alejandro Jodorowsky</span><span>Pier Paolo Pasolini</span><span>John Waters</span><span>Divine</span><span>Harmony Korine</span><span>Karen Walton</span><span>Tom Six</span><span>queer and cult cinema</span><span>dark comedy with blunt corners</span>
     </div>
   </div>
+  <aside class="rack" id="rack" aria-label="Specimen console">
+    <div class="rack-slate"><span>Console</span><em>Specimen 0</em></div>
+    <div class="rack-head"><strong>Hold and play.</strong><span>12 controls</span></div>
+    <div class="ctls">
+      <div class="ctl"><label for="c-freq"><i>01</i>Frequency</label><output id="o-freq" for="c-freq">1.05</output><input type="range" id="c-freq" min="0.3" max="4" step="0.01" value="1.05"></div>
+      <div class="ctl"><label for="c-mag"><i>02</i>Magnitude</label><output id="o-mag" for="c-mag">0.13</output><input type="range" id="c-mag" min="0" max="0.55" step="0.005" value="0.13"></div>
+      <div class="ctl"><span class="lab" id="l-type"><i>03</i>Noise type</span><output id="o-type">Simplex</output>
+        <div class="seg" role="group" aria-labelledby="l-type" id="c-type">
+          <button type="button" data-v="0" aria-pressed="true" title="Simplex: soft organic swell">Simplex</button>
+          <button type="button" data-v="1" aria-pressed="false" title="Ridged: scar tissue and tendons">Ridged</button>
+          <button type="button" data-v="2" aria-pressed="false" title="Turbulence: tumorous lumps">Tumor</button>
+          <button type="button" data-v="3" aria-pressed="false" title="Worley: fat cells and blisters">Worley</button>
+          <button type="button" data-v="4" aria-pressed="false" title="Domain warp: brain and gut folds">Warp</button>
+        </div></div>
+      <div class="ctl"><span class="lab" id="l-color"><i>04</i>Color</span><output id="o-color">Fresh</output>
+        <div class="sw" role="group" aria-labelledby="l-color" id="c-color">
+          <button type="button" data-v="fresh" aria-pressed="true" aria-label="Fresh" title="Fresh" style="background:#d87a68"></button>
+          <button type="button" data-v="necrotic" aria-pressed="false" aria-label="Necrotic" title="Necrotic" style="background:#8f8c5f"></button>
+          <button type="button" data-v="bruise" aria-pressed="false" aria-label="Bruise" title="Bruise" style="background:#8a5a86"></button>
+          <button type="button" data-v="burn" aria-pressed="false" aria-label="Burn" title="Burn" style="background:#a0461c"></button>
+          <button type="button" data-v="waters" aria-pressed="false" aria-label="Waters pink" title="Waters pink" style="background:#ff6fa8"></button>
+        </div></div>
+      <div class="ctl"><label for="c-seed"><i>05</i>Tissue seed</label><output id="o-seed" for="c-seed">000</output>
+        <div class="pair"><input type="range" id="c-seed" min="0" max="999" step="1" value="0"><button type="button" id="c-reroll" title="New random tissue">Reroll</button></div></div>
+      <div class="ctl"><label for="c-dark"><i>06</i>Darkness</label><output id="o-dark" for="c-dark">0.30</output><input type="range" id="c-dark" min="0" max="1" step="0.01" value="0.3"></div>
+      <div class="ctl"><label for="c-spike"><i>07</i>Spike</label><output id="o-spike" for="c-spike">0.00</output><input type="range" id="c-spike" min="0" max="1" step="0.01" value="0"></div>
+      <div class="ctl"><label for="c-cells"><i>08</i>Oval cells · Worley</label><output id="o-cells" for="c-cells">0.00</output><input type="range" id="c-cells" min="0" max="1" step="0.01" value="0"></div>
+      <div class="ctl"><label for="c-grad"><i>09</i>Gradient</label><output id="o-grad" for="c-grad">0.25</output><input type="range" id="c-grad" min="0" max="1" step="0.01" value="0.25"></div>
+      <div class="ctl"><label for="c-spec"><i>10</i>Specularity</label><output id="o-spec" for="c-spec">0.55</output><input type="range" id="c-spec" min="0" max="1.5" step="0.01" value="0.55"></div>
+      <div class="ctl"><span class="lab" id="l-light"><i>11</i>Light</span><output id="o-light">1.00</output>
+        <div class="pad-wrap">
+          <div class="pad" id="c-lightpad" tabindex="0" role="slider" aria-labelledby="l-light" aria-valuetext="Surgical lamp position" title="Drag to move the surgical lamp. Arrow keys work too."><b></b></div>
+          <input type="range" id="c-lint" min="0.2" max="2" step="0.01" value="1" aria-label="Light intensity">
+        </div></div>
+      <div class="ctl"><span class="lab" id="l-tools"><i>12</i>Triage tools</span><output id="o-tool">Probe</output>
+        <div class="tools" role="group" aria-labelledby="l-tools" id="c-tools">
+          <button type="button" data-v="probe" aria-pressed="true" title="Hold to press a wound into the tissue">Probe</button>
+          <button type="button" data-v="scalpel" aria-pressed="false" title="Hold and drag to cut">Scalpel</button>
+          <button type="button" data-v="suture" aria-pressed="false" title="Hold over a cut to close it">Suture</button>
+          <button type="button" data-v="defib" aria-pressed="false" title="Click the specimen to shock it">Defib</button>
+          <button type="button" data-v="cautery" aria-pressed="false" title="Hold to sear and blacken">Cautery</button>
+          <button type="button" class="reset" id="c-reset" title="Close every wound">Reset</button>
+        </div>
+        <span class="tip" id="tool-tip">Hold on the specimen to press a wound.</span></div>
+    </div>
+    <div class="rack-foot"><span>HR <b id="f-hr">72</b></span><span>Cuts <b id="f-cuts">0</b></span><span>Burns <b id="f-burn">0</b></span></div>
+  </aside>
 </section>
 
 <section class="reel" id="reel-1" style="--accent:var(--vhs)">
@@ -412,7 +515,7 @@ function onScroll(){
   tcv.textContent=pad(Math.floor(s/3600))+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60)+':'+pad(fr);
   const a=Math.round(f);
   if(a!==active){
-    active=a;reelNo.textContent=reelNames[a];
+    active=a;reelNo.textContent=reelNames[a];document.body.classList.toggle('on-hero',a===0);
     navs.forEach((n,i)=>n.classList.toggle('on',i===a));
     if(!reduce){cue.classList.remove('on');void cue.offsetWidth;cue.classList.add('on');}
   }
@@ -465,71 +568,273 @@ float snoise(vec3 v){
  return 42.*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
 }`;
 
-/* ---------- 0: the new flesh ---------- */
+const mouse=new THREE.Vector2(0,0),ray=new THREE.Raycaster();let pointerIn=false,pressed=false,px=-1,py=-1;
+/* ---------- 0: the new flesh, on the operating table ---------- */
 const g0=stage(0);
-const RAD=1.9;
-const fleshU={uTime:{value:0},uAmp:{value:0.13},uPoke:{value:new THREE.Vector3(0,0,RAD)},uWound:{value:0}};
-const flesh=new THREE.Mesh(new THREE.IcosahedronGeometry(RAD,48),new THREE.ShaderMaterial({
+const RAD=1.9,NCUT=40,NBURN=24;
+const cutArr=[],cutTarget=[],burnArr=[],burnTarget=[];
+for(let i=0;i<NCUT;i++){cutArr.push(new THREE.Vector4(0,0,0,0));cutTarget.push(0);}
+for(let i=0;i<NBURN;i++){burnArr.push(new THREE.Vector4(0,0,0,0));burnTarget.push(0);}
+const PRESETS={
+  fresh:{name:'Fresh',skin:[.86,.47,.40],meat:[.55,.08,.10],blood:[.20,.005,.025],vein:[.32,.05,.16],grad:[.30,.06,.22]},
+  necrotic:{name:'Necrotic',skin:[.58,.56,.40],meat:[.32,.30,.14],blood:[.07,.06,.02],vein:[.20,.24,.10],grad:[.10,.14,.06]},
+  bruise:{name:'Bruise',skin:[.66,.44,.56],meat:[.34,.10,.32],blood:[.10,.02,.12],vein:[.16,.10,.38],grad:[.10,.08,.36]},
+  burn:{name:'Burn',skin:[.80,.40,.18],meat:[.38,.09,.03],blood:[.05,.02,.01],vein:[.12,.05,.03],grad:[.03,.02,.02]},
+  waters:{name:'Waters pink',skin:[1.,.58,.72],meat:[.82,.16,.46],blood:[.30,.0,.12],vein:[.52,.06,.32],grad:[.30,.80,.78]}
+};
+const v3=a=>new THREE.Vector3(a[0],a[1],a[2]);
+const colTarget={};['skin','meat','blood','vein','grad'].forEach(k=>colTarget[k]=v3(PRESETS.fresh[k]));
+const fleshU={
+  uTime:{value:0},uBeat:{value:0},uAmp:{value:.13},uFreq:{value:1.05},uType:{value:0},uSeed:{value:0},
+  uSpike:{value:0},uCells:{value:0},uPoke:{value:new THREE.Vector3(0,0,RAD)},uWound:{value:0},uShock:{value:0},
+  uCuts:{value:cutArr},uBurns:{value:burnArr},
+  uSkin:{value:v3(PRESETS.fresh.skin)},uMeat:{value:v3(PRESETS.fresh.meat)},uBlood:{value:v3(PRESETS.fresh.blood)},
+  uVein:{value:v3(PRESETS.fresh.vein)},uGradCol:{value:v3(PRESETS.fresh.grad)},
+  uDark:{value:.3},uGrad:{value:.25},uSpec:{value:.55},uL1:{value:new THREE.Vector3(.5,.8,.6).normalize()},uLI:{value:1}
+};
+const DEFS=`#define NCUT ${NCUT}\n#define NBURN ${NBURN}\n#define RAD ${RAD.toFixed(2)}\n`;
+const CELL=`
+vec3 hash3(vec3 p){return fract(sin(vec3(dot(p,vec3(127.1,311.7,74.7)),dot(p,vec3(269.5,183.3,246.1)),dot(p,vec3(113.5,271.9,124.6))))*43758.5453);}
+vec2 worley(vec3 p,float t){
+  vec3 i=floor(p),f=fract(p);float F1=8.,F2=8.;
+  for(int x=-1;x<=1;x++)for(int y=-1;y<=1;y++)for(int z=-1;z<=1;z++){
+    vec3 g=vec3(float(x),float(y),float(z));vec3 o=hash3(i+g);o=.5+.42*sin(t+6.2831*o);
+    vec3 r=g+o-f;float d=dot(r,r);
+    if(d<F1){F2=F1;F1=d;}else if(d<F2){F2=d;}
+  }
+  return sqrt(vec2(F1,F2));
+}`;
+const flesh=new THREE.Mesh(new THREE.IcosahedronGeometry(RAD,40),new THREE.ShaderMaterial({
   uniforms:fleshU,
-  vertexShader:NOISE+`
-  uniform float uTime,uAmp,uWound;uniform vec3 uPoke;
-  varying vec3 vPos;varying vec3 vNorm;varying vec3 vView;varying float vD;varying float vW;
-  float woundAt(vec3 p){return 1.-smoothstep(0.,.95,distance(p,uPoke));}
-  float disp(vec3 p){
-    vec3 n=normalize(p);
-    float beat=pow(max(sin(uTime*2.6),0.),10.)*.035;
-    float d=snoise(n*1.05+uTime*.05)*uAmp+snoise(n*2.3-uTime*.035)*uAmp*.3+beat;
-    float w=woundAt(p);
-    d-=w*w*.62*uWound;
+  vertexShader:DEFS+NOISE+CELL+`
+  uniform float uTime,uBeat,uAmp,uFreq,uType,uSeed,uSpike,uCells,uWound,uShock;
+  uniform vec3 uPoke;uniform vec4 uCuts[NCUT];uniform vec4 uBurns[NBURN];
+  varying vec3 vPos;varying vec3 vNorm;varying vec3 vView;varying float vD;varying float vW;varying float vCell;varying float vY;varying float vBurn;
+  float field(vec3 q){
+    float t=uTime*.05;
+    if(uType<.5)return snoise(q+t);
+    if(uType<1.5){float s=0.,a=.62,f=1.;for(int i=0;i<3;i++){float r=1.-abs(snoise(q*f+t));s+=r*r*a;f*=2.1;a*=.5;}return s-.5;}
+    if(uType<2.5){float s=0.,a=.55,f=1.;for(int i=0;i<5;i++){s+=abs(snoise(q*f-t))*a;f*=2.03;a*=.5;}return s*1.25-.55;}
+    if(uType<3.5){vec2 w=worley(q*1.4,uTime*.3);return .6-w.x*1.1;}
+    vec3 w=vec3(snoise(q+vec3(0.,t,0.)),snoise(q+vec3(5.2,1.3,t)),snoise(q+vec3(9.1,t,2.8)));
+    return snoise(q*1.2+1.8*w)*1.05;
+  }
+  float cutAt(vec3 p){float c=0.;for(int i=0;i<NCUT;i++){vec4 k=uCuts[i];if(k.w>.001)c=max(c,(1.-smoothstep(0.,.12,distance(p,k.xyz)))*k.w);}return c;}
+  float burnAt(vec3 p){float c=0.;for(int i=0;i<NBURN;i++){vec4 k=uBurns[i];if(k.w>.001)c=max(c,(1.-smoothstep(0.,.34,distance(p,k.xyz)))*k.w);}return c;}
+  float disp(vec3 p,out float ce){
+    vec3 n=normalize(p);vec3 q=n*uFreq+uSeed;
+    float d=field(q)*uAmp;
+    d+=snoise(n*uFreq*2.3-uTime*.035+uSeed)*uAmp*.3;
+    d+=uBeat*.035;
+    float s=snoise(n*6.5+uSeed*1.7+13.);d+=pow(max(s,0.),3.)*uSpike*1.15;
+    ce=0.;
+    if(uCells>.001){
+      vec2 w=worley(vec3(n.x*3.2,n.y*1.6,n.z*3.2)+uSeed*.37,uTime*.25);
+      d+=pow(max(0.,1.-w.x*1.3),2.)*uCells*.34;
+      ce=(1.-smoothstep(0.,.1,w.y-w.x))*uCells;d-=ce*.045;
+    }
+    float w0=1.-smoothstep(0.,.95,distance(p,uPoke));
+    d-=w0*w0*.62*uWound;
     d+=smoothstep(.55,.2,abs(distance(p,uPoke)-.8))*.07*uWound;
+    d-=cutAt(p)*.3;
+    d-=burnAt(p)*.07;
+    d+=snoise(n*9.+uTime*22.)*.06*uShock;
     return d;
   }
   void main(){
-    vec3 n=normalize(position);
-    float d0=disp(position);
+    vec3 n=normalize(position);float ce,dum;
+    float d0=disp(position,ce);
     vec3 p=position+n*d0;
     vec3 t=normalize(cross(n,vec3(0.,1.,.001)));vec3 b=cross(n,t);
-    vec3 qa=normalize(position+t*.03)*${RAD.toFixed(2)};vec3 qb=normalize(position+b*.03)*${RAD.toFixed(2)};
-    vec3 pa=qa+normalize(qa)*disp(qa);vec3 pb=qb+normalize(qb)*disp(qb);
+    vec3 qa=normalize(position+t*.03)*RAD;vec3 qb=normalize(position+b*.03)*RAD;
+    vec3 pa=qa+normalize(qa)*disp(qa,dum);vec3 pb=qb+normalize(qb)*disp(qb,dum);
     vec3 N=normalize(cross(pa-p,pb-p));
-    vD=d0;vW=woundAt(position)*uWound;vPos=p;
+    float w0=1.-smoothstep(0.,.95,distance(position,uPoke));
+    vD=d0;vW=max(w0*uWound,cutAt(position)*1.25);vCell=ce;vY=position.y/RAD;vBurn=burnAt(position);vPos=p;
     vec4 mv=modelViewMatrix*vec4(p,1.);
     vView=-mv.xyz;vNorm=normalMatrix*N;
     gl_Position=projectionMatrix*mv;
   }`,
   fragmentShader:NOISE+`
-  uniform float uTime;
-  varying vec3 vPos;varying vec3 vNorm;varying vec3 vView;varying float vD;varying float vW;
+  uniform float uTime,uDark,uGrad,uSpec,uLI,uShock;
+  uniform vec3 uSkin,uMeat,uBlood,uVein,uGradCol,uL1;
+  varying vec3 vPos;varying vec3 vNorm;varying vec3 vView;varying float vD;varying float vW;varying float vCell;varying float vY;varying float vBurn;
   void main(){
     vec3 N=normalize(vNorm);vec3 V=normalize(vView);
-    vec3 L1=normalize(vec3(.5,.8,.6));vec3 L2=normalize(vec3(-.7,-.2,.4));
-    vec3 blood=vec3(.20,.005,.025);vec3 meat=vec3(.55,.08,.10);vec3 skin=vec3(.86,.47,.40);vec3 pink=vec3(1.,.25,.56);
-    vec3 base=mix(meat,skin,smoothstep(-.12,.16,vD));
+    vec3 L1=normalize(uL1);vec3 L2=normalize(vec3(-.7,-.2,.4));
+    vec3 base=mix(uMeat,uSkin,smoothstep(-.12,.16,vD));
     float veinA=pow(1.-abs(snoise(vPos*1.6+vec3(0.,uTime*.02,0.))),14.);
     float veinB=pow(1.-abs(snoise(vPos*4.2+7.)),18.);
-    vec3 veinCol=vec3(.32,.05,.16);
-    base=mix(base,veinCol,clamp(veinA*.75+veinB*.45,0.,1.));
-    float pores=snoise(vPos*38.)*.5+.5;
-    base*=.9+.1*pores;
-    vec3 raw=mix(vec3(.75,.02,.06),blood,smoothstep(.2,.85,vW));
+    base=mix(base,uVein,clamp(veinA*.75+veinB*.45,0.,1.));
+    base*=.9+.1*(snoise(vPos*38.)*.5+.5);
+    base=mix(base,uVein*.7,clamp(vCell,0.,1.)*.75);
+    float g=smoothstep(.55,-1.,vY);base=mix(base,uGradCol,g*uGrad);
+    float rimG=pow(1.-abs(dot(N,V)),1.5);base=mix(base,uGradCol*1.2,rimG*uGrad*.35);
+    vec3 raw=mix(vec3(.75,.02,.06),uBlood,smoothstep(.2,.85,vW));
     base=mix(base,raw,smoothstep(.05,.35,vW));
     float crevice=smoothstep(.02,-.14,vD);
-    base=mix(base,blood,crevice*.7);
+    base=mix(base,uBlood,crevice*(.35+.6*uDark));
+    float charN=snoise(vPos*14.)*.5+.5;
+    vec3 charCol=mix(vec3(.05,.03,.025),vec3(.35,.12,.05),smoothstep(.55,1.,charN)*(1.-vBurn));
+    base=mix(base,charCol,smoothstep(.05,.6,vBurn));
     float wrap=(dot(N,L1)+.45)/1.45;
-    float diff=max(wrap,0.)*.85+max(dot(N,L2),0.)*.18+.12;
-    vec3 sss=vec3(1.,.18,.2)*pow(1.-abs(dot(N,V)),2.)*.45;
-    float wet=.55+vW*.9+crevice*.3;
+    float amb=.14*(1.-uDark);
+    float diff=max(wrap,0.)*.85*uLI+max(dot(N,L2),0.)*.18*(1.-uDark*.7)+amb;
+    vec3 sss=vec3(1.,.18,.2)*pow(1.-abs(dot(N,V)),2.)*.45*(1.-uDark*.5);
+    float wet=(.55+vW*.9+crevice*.3)*uSpec*1.8*(1.-vBurn*.85);
     vec3 H=normalize(L1+V);
-    float spec=pow(max(dot(N,H),0.),90.)*1.6*wet+pow(max(dot(N,H),0.),14.)*.12;
+    float spec=(pow(max(dot(N,H),0.),90.)*1.6*wet+pow(max(dot(N,H),0.),14.)*.12*uSpec)*uLI;
     float fr=pow(1.-max(dot(N,V),0.),2.4);
-    vec3 c=base*diff+sss*base*1.4+vec3(1.,.93,.9)*spec+pink*fr*.55;
-    gl_FragColor=vec4(pow(c,vec3(.95)),1.);
+    vec3 c=base*diff+sss*base*1.4+vec3(1.,.93,.9)*spec+vec3(1.,.25,.56)*fr*.55*(1.-uDark*.6);
+    c+=vec3(1.,.35,.05)*smoothstep(.75,1.,vBurn)*smoothstep(.6,1.,charN)*.6;
+    c+=vec3(.4,.9,1.)*uShock*(.2+fr);
+    c*=mix(1.,.55,uDark);
+    gl_FragColor=vec4(pow(max(c,0.),vec3(.95)),1.);
   }`
 }));
 g0.add(flesh);
 const fleshProxy=new THREE.Mesh(new THREE.IcosahedronGeometry(RAD,3),new THREE.MeshBasicMaterial());
 fleshProxy.visible=false;flesh.add(fleshProxy);
 let woundTarget=0;
+
+/* the operating theatre: lamp, drip, monitor, cords, tray */
+const theatre=new THREE.Group();g0.add(theatre);
+const steel=new THREE.MeshStandardMaterial({color:0xa9b0b4,metalness:.85,roughness:.25});
+const darkSteel=new THREE.MeshStandardMaterial({color:0x2c2629,metalness:.65,roughness:.4});
+// surgical lamp, driven by the light pad
+const lamp=new THREE.Group();theatre.add(lamp);
+const lampArm=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,3.4,10),darkSteel);lampArm.position.y=1.9;lamp.add(lampArm);
+const lampJoint=new THREE.Mesh(new THREE.SphereGeometry(.08,14,10),steel);lampJoint.position.y=.55;lamp.add(lampJoint);
+const dish=new THREE.Mesh(new THREE.SphereGeometry(.62,36,14,0,Math.PI*2,0,Math.PI/2.5),new THREE.MeshStandardMaterial({color:0xe2ddd8,metalness:.35,roughness:.3,side:THREE.DoubleSide}));lamp.add(dish);
+const lampGlow=new THREE.Mesh(new THREE.CircleGeometry(.5,36),new THREE.MeshBasicMaterial({color:0xfff3e8}));lampGlow.rotation.x=Math.PI/2;lampGlow.position.y=.2;lamp.add(lampGlow);
+for(let k=0;k<6;k++){const a=k/6*Math.PI*2;const bulb=new THREE.Mesh(new THREE.CircleGeometry(.07,16),new THREE.MeshBasicMaterial({color:0xffffff}));bulb.rotation.x=Math.PI/2;bulb.position.set(Math.cos(a)*.28,.19,Math.sin(a)*.28);lamp.add(bulb);}
+const lampLight=new THREE.SpotLight(0xfff0e6,1.3,14,.55,.6);lamp.add(lampLight);lampLight.target=flesh;
+// IV pole with blood bag and ECG monitor
+const iv=new THREE.Group();iv.position.set(2.65,0,-1.3);theatre.add(iv);
+const pole=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,6,10),steel);pole.position.y=-.2;iv.add(pole);
+const hook=new THREE.Mesh(new THREE.TorusGeometry(.12,.015,8,20,Math.PI),steel);hook.position.set(0,2.72,0);iv.add(hook);
+const bag=new THREE.Mesh(new THREE.SphereGeometry(.5,24,18),new THREE.MeshStandardMaterial({color:0x8e0c20,roughness:.25,metalness:.1,transparent:true,opacity:.88,emissive:0x2a0006}));
+bag.scale.set(.62,1,.24);bag.position.set(0,2.05,0);iv.add(bag);
+const bagLabel=new THREE.Mesh(new THREE.PlaneGeometry(.34,.22),new THREE.MeshBasicMaterial({color:0xf1e6d8}));bagLabel.position.set(0,2.1,.125);iv.add(bagLabel);
+const chamber=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.22,12),new THREE.MeshStandardMaterial({color:0xd9e8ea,transparent:true,opacity:.5}));chamber.position.set(0,1.45,0);iv.add(chamber);
+const tubeCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(2.65,1.33,-1.3),new THREE.Vector3(2.45,.4,-.8),new THREE.Vector3(1.95,.45,.05),new THREE.Vector3(1.35,.42,.55)]);
+const ivTube=new THREE.Mesh(new THREE.TubeGeometry(tubeCurve,60,.022,8,false),new THREE.MeshStandardMaterial({color:0xb4102c,roughness:.2,transparent:true,opacity:.8}));theatre.add(ivTube);
+const drops=[];for(let k=0;k<6;k++){const d=new THREE.Mesh(new THREE.SphereGeometry(.028,8,6),new THREE.MeshBasicMaterial({color:0xff2a3a}));d.userData.t=k/6;theatre.add(d);drops.push(d);}
+const monitorBox=new THREE.Mesh(new THREE.BoxGeometry(1.15,.78,.3),darkSteel);monitorBox.position.set(0,-.95,.22);iv.add(monitorBox);
+const EW=320,EH=210,ecan=document.createElement('canvas');ecan.width=EW;ecan.height=EH;const ex=ecan.getContext('2d');
+const etex=new THREE.CanvasTexture(ecan);etex.encoding=THREE.sRGBEncoding;
+const ecgScreen=new THREE.Mesh(new THREE.PlaneGeometry(1.02,.67),new THREE.MeshBasicMaterial({map:etex,toneMapped:false}));ecgScreen.position.set(0,-.95,.376);iv.add(ecgScreen);
+const ecgBuf=new Float32Array(EW);let ecgHead=0;
+function ecgWave(x){const G=(c,w)=>Math.exp(-Math.pow((x-c)/w,2));return .1*G(.15,.03)-.08*G(.33,.01)+G(.36,.012)-.22*G(.39,.012)+.25*G(.6,.05);}
+// umbilical cords, ribbed, pulsing
+const cordMat=new THREE.MeshStandardMaterial({color:0x7a1c2a,roughness:.3,metalness:.05,emissive:0x1a0206});
+const cords=[];
+[[[-.6,-1.45,.25],[-1.3,-2.4,.6],[-2.3,-3.1,.2],[-3.3,-3.9,-.5]],[[.55,-1.5,-.3],[1.1,-2.6,-.2],[.7,-3.4,.5],[.3,-4.3,.9]]].forEach(pts=>{
+  const curve=new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(...p)));
+  const cord=new THREE.Group();theatre.add(cord);
+  cord.add(new THREE.Mesh(new THREE.TubeGeometry(curve,60,.085,10,false),cordMat));
+  const N=34,rings=new THREE.InstancedMesh(new THREE.TorusGeometry(.095,.028,8,18),cordMat,N);
+  const o=new THREE.Object3D(),zAxis=new THREE.Vector3(0,0,1);
+  for(let k=0;k<N;k++){const u=k/(N-1);o.position.copy(curve.getPoint(u));o.quaternion.setFromUnitVectors(zAxis,curve.getTangent(u).normalize());o.updateMatrix();rings.setMatrixAt(k,o.matrix);}
+  cord.add(rings);cords.push(cord);
+});
+// instrument tray
+const tray=new THREE.Group();tray.position.set(-2.5,-2.75,.5);tray.rotation.set(.35,.4,0);theatre.add(tray);
+tray.add(new THREE.Mesh(new THREE.BoxGeometry(1.1,.05,.6),steel));
+const scalpelM=new THREE.Group();scalpelM.position.set(-.2,.05,-.1);scalpelM.rotation.y=.3;tray.add(scalpelM);
+scalpelM.add(new THREE.Mesh(new THREE.BoxGeometry(.5,.025,.05),steel));
+const blade=new THREE.Mesh(new THREE.ConeGeometry(.03,.16,3),new THREE.MeshStandardMaterial({color:0xe8eef0,metalness:1,roughness:.1}));blade.rotation.z=-Math.PI/2;blade.position.x=.32;scalpelM.add(blade);
+[-.06,.06].forEach(dz=>{const f=new THREE.Mesh(new THREE.CylinderGeometry(.012,.012,.5,6),steel);f.rotation.z=Math.PI/2;f.rotation.y=dz*2;f.position.set(.15,.04,.15+dz*.4);tray.add(f);});
+const vial=new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,.22,14),new THREE.MeshStandardMaterial({color:0xff3f8e,transparent:true,opacity:.7,roughness:.1}));vial.position.set(.38,.13,-.12);tray.add(vial);
+const theatreFill=new THREE.PointLight(0xff3f8e,.6,9);theatreFill.position.set(-2,-1,2);g0.add(theatreFill);
+
+/* console state */
+let tool='probe',lastCut=null,cutIdx=0,burnIdx=0,lastBurn=null,shock=0,bpm=72,beatPhase=0,defibQueued=false,ecgClock=0;
+const toolTips={probe:'Hold on the specimen to press a wound.',scalpel:'Hold and drag across the specimen to cut.',suture:'Hold over a cut to stitch it closed.',defib:'Click the specimen to shock it. Watch the monitor.',cautery:'Hold to sear the tissue black.'};
+(function wireConsole(){
+  const $=id=>document.getElementById(id);
+  const fill=el=>el.style.setProperty('--p',((el.value-el.min)/(el.max-el.min)*100)+'%');
+  function range(id,fmt,fn){const el=$('c-'+id),out=$('o-'+id);const up=()=>{const v=parseFloat(el.value);if(out)out.textContent=fmt(v);fill(el);fn(v);};el.addEventListener('input',up);up();return el;}
+  const f2=v=>v.toFixed(2);
+  range('freq',f2,v=>fleshU.uFreq.value=v);
+  range('mag',f2,v=>fleshU.uAmp.value=v);
+  const seedEl=range('seed',v=>String(v).padStart(3,'0'),v=>fleshU.uSeed.value=v*.137);
+  range('dark',f2,v=>fleshU.uDark.value=v);
+  range('spike',f2,v=>fleshU.uSpike.value=v);
+  range('cells',f2,v=>fleshU.uCells.value=v);
+  range('grad',f2,v=>fleshU.uGrad.value=v);
+  range('spec',f2,v=>fleshU.uSpec.value=v);
+  const lint=$('c-lint');const upL=()=>{fill(lint);fleshU.uLI.value=parseFloat(lint.value);$('o-light').textContent=parseFloat(lint.value).toFixed(2);};lint.addEventListener('input',upL);upL();
+  $('c-reroll').addEventListener('click',()=>{seedEl.value=Math.floor(Math.random()*1000);seedEl.dispatchEvent(new Event('input'));});
+  function group(id,fn){const g=$(id);g.querySelectorAll('button[data-v]').forEach(b=>b.addEventListener('click',()=>{g.querySelectorAll('button[data-v]').forEach(o=>o.setAttribute('aria-pressed',String(o===b)));fn(b.dataset.v,b);}));}
+  group('c-type',(v,b)=>{fleshU.uType.value=+v;$('o-type').textContent=b.textContent;});
+  group('c-color',v=>{const P=PRESETS[v];['skin','meat','blood','vein','grad'].forEach(k=>colTarget[k].set(P[k][0],P[k][1],P[k][2]));$('o-color').textContent=P.name;});
+  group('c-tools',(v,b)=>{tool=v;$('o-tool').textContent=b.textContent;$('tool-tip').textContent=toolTips[v];});
+  $('c-reset').addEventListener('click',()=>{for(let i=0;i<NCUT;i++){cutTarget[i]=0;}for(let i=0;i<NBURN;i++){burnTarget[i]=0;}shock=0;bpm=72;});
+  // light pad
+  const pad=$('c-lightpad');let lx=.7,ly=.2;
+  function setLight(x,y){lx=Math.min(1,Math.max(0,x));ly=Math.min(1,Math.max(0,y));pad.style.setProperty('--lx',(lx*100)+'%');pad.style.setProperty('--ly',(ly*100)+'%');
+    const X=(lx-.5)*2,Y=(.5-ly)*2;fleshU.uL1.value.set(X*1.5,.25+Y*1.2,.8).normalize();}
+  const fromEv=e=>{const r=pad.getBoundingClientRect();setLight((e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height);};
+  pad.addEventListener('pointerdown',e=>{pad.setPointerCapture(e.pointerId);fromEv(e);});
+  pad.addEventListener('pointermove',e=>{if(pad.hasPointerCapture(e.pointerId))fromEv(e);});
+  pad.addEventListener('keydown',e=>{const s=.05;const m={ArrowLeft:[-s,0],ArrowRight:[s,0],ArrowUp:[0,-s],ArrowDown:[0,s]}[e.key];if(m){e.preventDefault();setLight(lx+m[0],ly+m[1]);}});
+  setLight(lx,ly);
+})();
+const fHr=document.getElementById('f-hr'),fCuts=document.getElementById('f-cuts'),fBurn=document.getElementById('f-burn');
+function heroPick(h,dt){
+  if(!h){woundTarget=0;return;}
+  inv.copy(flesh.matrixWorld).invert();
+  const lp=h.point.clone().applyMatrix4(inv).normalize().multiplyScalar(RAD);
+  if(tool==='probe'){fleshU.uPoke.value.lerp(lp,.55);woundTarget=pressed?1.35:.6;return;}
+  woundTarget=0;
+  if(tool==='defib'){if(defibQueued){shock=1;bpm=165;}return;}
+  if(!pressed)return;
+  if(tool==='scalpel'){if(!lastCut||lastCut.distanceTo(lp)>.065){cutArr[cutIdx].set(lp.x,lp.y,lp.z,Math.max(cutArr[cutIdx].w,.02));cutTarget[cutIdx]=1;cutIdx=(cutIdx+1)%NCUT;lastCut=lp;bpm=Math.min(130,bpm+1.5);}}
+  else if(tool==='suture'){for(let i=0;i<NCUT;i++){const c=cutArr[i];if(cutTarget[i]>0&&tmpV.set(c.x,c.y,c.z).distanceTo(lp)<.42)cutTarget[i]=Math.max(0,cutTarget[i]-dt*2.2);}}
+  else if(tool==='cautery'){if(!lastBurn||lastBurn.distanceTo(lp)>.22){burnArr[burnIdx].set(lp.x,lp.y,lp.z,Math.max(burnArr[burnIdx].w,.02));burnTarget[burnIdx]=1;burnIdx=(burnIdx+1)%NBURN;lastBurn=lp;bpm=Math.min(140,bpm+3);}}
+}
+const lampPos=new THREE.Vector3(),downV=new THREE.Vector3(0,-1,0);
+function heroTick(t,dt){
+  fleshU.uTime.value=t;
+  fleshU.uWound.value+=(woundTarget-fleshU.uWound.value)*Math.min(1,dt*(woundTarget>fleshU.uWound.value?14:5));
+  flesh.rotation.y=t*.06+mouse.x*.25;flesh.rotation.x=mouse.y*.18;
+  beatPhase+=dt*bpm/60;bpm+=(72-bpm)*dt*.12;shock=Math.max(0,shock-dt*1.4);
+  fleshU.uBeat.value=Math.pow(Math.max(Math.sin(beatPhase*Math.PI*2),0),10)*(1+shock*2.5);
+  fleshU.uShock.value=shock;
+  let nc=0,nb=0;
+  for(let i=0;i<NCUT;i++){const c=cutArr[i];c.w+=(cutTarget[i]-c.w)*Math.min(1,dt*9);if(c.w<.003&&cutTarget[i]===0)c.w=0;if(cutTarget[i]>.5)nc++;}
+  for(let i=0;i<NBURN;i++){const c=burnArr[i];c.w+=(burnTarget[i]-c.w)*Math.min(1,dt*5);if(c.w<.003&&burnTarget[i]===0)c.w=0;if(burnTarget[i]>.5)nb++;}
+  const k=Math.min(1,dt*4);
+  fleshU.uSkin.value.lerp(colTarget.skin,k);fleshU.uMeat.value.lerp(colTarget.meat,k);fleshU.uBlood.value.lerp(colTarget.blood,k);fleshU.uVein.value.lerp(colTarget.vein,k);fleshU.uGradCol.value.lerp(colTarget.grad,k);
+  // lamp follows the light direction
+  lampPos.copy(fleshU.uL1.value).multiplyScalar(3.35);lampPos.y=Math.min(lampPos.y,2.35);lamp.position.copy(lampPos);
+  lamp.quaternion.setFromUnitVectors(downV,tmpV.copy(lampPos).negate().normalize());
+  lampLight.intensity=1.3*fleshU.uLI.value*(1-fleshU.uDark.value*.5);
+  lampGlow.material.color.setScalar(.55+.45*Math.min(1,fleshU.uLI.value));
+  // drip and cords
+  drops.forEach(d=>{d.userData.t=(d.userData.t+dt*.22*(bpm/72))%1;d.position.copy(tubeCurve.getPoint(d.userData.t));});
+  const pulse=1+fleshU.uBeat.value*.06;cords.forEach((c,i)=>c.scale.set(pulse,1,pulse));
+  theatreFill.intensity=.6*(1-fleshU.uDark.value*.7)+shock*2;
+  // ECG monitor
+  ecgClock+=dt;
+  if(ecgClock>1/30){
+    const step=Math.max(1,Math.round(ecgClock*90));ecgClock=0;
+    for(let s=0;s<step;s++){const ph=((beatPhase-(step-1-s)/90*bpm/60)%1+1)%1;let v=ecgWave((ph+.11)%1);if(shock>.25)v=(Math.random()-.5)*shock*1.6;ecgBuf[ecgHead]=v;ecgHead=(ecgHead+1)%EW;}
+    ex.fillStyle='#050304';ex.fillRect(0,0,EW,EH);
+    ex.strokeStyle='rgba(95,211,207,.08)';ex.lineWidth=1;for(let x=0;x<EW;x+=20){ex.beginPath();ex.moveTo(x,0);ex.lineTo(x,EH);ex.stroke();}for(let y=0;y<EH;y+=20){ex.beginPath();ex.moveTo(0,y);ex.lineTo(EW,y);ex.stroke();}
+    ex.strokeStyle='#5fd3cf';ex.lineWidth=2.4;ex.shadowColor='#5fd3cf';ex.shadowBlur=8;ex.beginPath();let pen=false;
+    for(let x=0;x<EW;x++){const gap=(x-ecgHead+EW)%EW;if(gap<14){pen=false;continue;}const y=EH*.6-ecgBuf[x]*EH*.42;if(!pen){ex.moveTo(x,y);pen=true;}else ex.lineTo(x,y);}
+    ex.stroke();ex.shadowBlur=0;
+    ex.fillStyle='#ff3f8e';ex.font='600 30px "IBM Plex Mono", monospace';ex.textAlign='right';ex.fillText(String(Math.round(bpm)),EW-12,38);
+    ex.font='11px "IBM Plex Mono", monospace';ex.fillText('HR  BPM',EW-12,54);
+    ex.textAlign='left';ex.fillStyle='#a59a95';ex.fillText('SPECIMEN 0  ·  NEW FLESH',12,20);
+    if(shock>.25){ex.fillStyle='#ff2a3a';ex.font='600 16px "IBM Plex Mono", monospace';ex.fillText('V-FIB  ·  CLEAR!',12,EH-14);}
+    etex.needsUpdate=true;
+    fHr.textContent=Math.round(bpm);fCuts.textContent=nc;fBurn.textContent=nb;
+  }
+}
+
 
 /* ---------- 1: the pipeline viewport ---------- */
 const g1=stage(1);
@@ -978,7 +1283,8 @@ const FOVH=2*9*Math.tan(THREE.MathUtils.degToRad(20));
 // [height, width] each scene needs in world units at scale 1
 const dims=[null,[5.6,5.6],[4.6,5.8],[5.2,5.8],[2.45,3.15],[4.9,7.2],null];
 const rects=[];
-function resize(){const w=innerWidth,h=innerHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();}
+const rackEl=document.getElementById('rack');let rackAbs=false;
+function resize(){const w=innerWidth,h=innerHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();rackAbs=getComputedStyle(rackEl).position==='absolute';}
 addEventListener('resize',resize);resize();
 function place(){
   const vh=innerHeight,vw=innerWidth,upp=FOVH/vh;
@@ -988,7 +1294,7 @@ function place(){
     const vis=r.height>0&&r.bottom>-60&&r.top<vh+60;
     g.visible=vis;if(!vis)continue;
     let cx=r.left+r.width/2,cy=r.top+r.height/2,s;
-    if(i===0){cx=vw/2;cy=r.top+Math.min(r.height,vh)/2;s=vw<820?.8:1;}
+    if(i===0){cx=rackAbs?Math.min(vw/2,rackEl.getBoundingClientRect().left*.55):vw/2;cy=r.top+Math.min(r.height,vh)/2;s=vw<820?.72:(rackAbs?Math.min(1,vw/1500):1);}
     else if(i===6){cx=vw/2;s=1;}
     else s=Math.min(r.height*upp/dims[i][0],r.width*upp/dims[i][1]);
     g.position.set((cx-vw/2)*upp,-(cy-vh/2)*upp,0);g.scale.setScalar(s);
@@ -997,18 +1303,14 @@ function place(){
 function inRect(r,x,y){return !!r&&x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom;}
 
 /* ---------- pointer ---------- */
-const mouse=new THREE.Vector2(0,0),ray=new THREE.Raycaster();let pointerIn=false,pressed=false,px=-1,py=-1;
-function setPointer(e){px=e.clientX;py=e.clientY;mouse.x=px/innerWidth*2-1;mouse.y=-(py/innerHeight)*2+1;pointerIn=true;}
+let overUI=false;
+function setPointer(e){px=e.clientX;py=e.clientY;mouse.x=px/innerWidth*2-1;mouse.y=-(py/innerHeight)*2+1;pointerIn=true;overUI=!!(e.target&&e.target.closest&&e.target.closest('.rack,a,button,input,.panel,.booth'));}
 addEventListener('pointermove',setPointer,{passive:true});
-addEventListener('pointerdown',e=>{setPointer(e);pressed=true;},{passive:true});
-['pointerup','pointercancel','blur'].forEach(ev=>addEventListener(ev,()=>{pressed=false;}));
-function pick(){
+addEventListener('pointerdown',e=>{setPointer(e);pressed=!overUI;if(!overUI)defibQueued=true;},{passive:true});
+['pointerup','pointercancel','blur'].forEach(ev=>addEventListener(ev,()=>{pressed=false;lastCut=null;lastBurn=null;}));
+function pick(dt){
   ray.setFromCamera(mouse,cam);
-  if(groups[0].visible){
-    const h=ray.intersectObject(fleshProxy)[0];
-    if(h){inv.copy(flesh.matrixWorld).invert();tmpV.copy(h.point).applyMatrix4(inv).normalize().multiplyScalar(RAD);fleshU.uPoke.value.lerp(tmpV,.55);woundTarget=pressed?1.35:.6;}
-    else woundTarget=0;
-  }
+  if(groups[0].visible){heroPick(overUI?null:ray.intersectObject(fleshProxy)[0],dt);defibQueued=false;}
   if(groups[2].visible){
     const h=ray.intersectObjects(exObjs)[0];
     exObjs.forEach(o=>o.userData.hover=0);
@@ -1029,13 +1331,9 @@ function tick(){
   if(!running)return;
   const dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime*(reduce?.3:1);
   place();
-  if(pointerIn)pick();
+  if(pointerIn)pick(dt);
 
-  if(groups[0].visible){
-    fleshU.uTime.value=t;
-    fleshU.uWound.value+=(woundTarget-fleshU.uWound.value)*Math.min(1,dt*(woundTarget>fleshU.uWound.value?14:5));
-    flesh.rotation.y=t*.06+mouse.x*.25;flesh.rotation.x=mouse.y*.18;
-  }
+  if(groups[0].visible)heroTick(t,dt);
   if(groups[1].visible){
     const want=(pressed&&inRect(rects[1],px,py))?1:0;lift+=(want-lift)*Math.min(1,dt*5);
     knotRig.position.y=lift*1.35;knotRig.scale.setScalar(1+lift*.22);
