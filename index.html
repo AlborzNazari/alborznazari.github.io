@@ -166,14 +166,70 @@ main{position:relative;z-index:3;padding-inline:clamp(16px,5vw,80px)}
 .fin{font-family:var(--body);font-style:italic;color:var(--bone-dim)}
 
 
+
+/* instrument dock, pinned under the header */
+.dock{position:sticky;top:30px;z-index:1;background:rgba(12,8,10,.96);padding:.25rem .8rem .55rem;border-bottom:1px solid rgba(255,63,142,.35)}
+.dock-head{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;margin-bottom:.35rem}
+.dock-head .lab{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-dim)}
+.dock-head i{font-style:normal;color:var(--waters);margin-right:.4rem}
+.dock-head output{font-size:11px;color:var(--waters);text-transform:uppercase;letter-spacing:.08em}
+.dock-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.dock-grid button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:.35rem .1rem .3rem;background:rgba(241,230,216,.03);border:1px solid rgba(241,230,216,.2);color:var(--bone-dim);cursor:pointer;font-family:var(--mono);transition:background .15s,color .15s,border-color .15s,transform .15s}
+.dock-grid button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.dock-grid button span{font-size:8.5px;letter-spacing:.04em;text-transform:uppercase;line-height:1}
+.dock-grid button:hover{color:var(--bone);border-color:var(--bone-dim);transform:translateY(-1px)}
+.dock-grid button.gore{border-color:rgba(255,42,58,.55)}
+.dock-grid button.scifi{border-color:rgba(201,162,76,.6)}
+.dock-grid button[aria-pressed="true"]{background:var(--waters);border-color:var(--waters);color:var(--ink)}
+.dock .tip{margin:.4rem 0 .35rem;min-height:2.6em}
+.resets{display:flex;gap:4px}
+.resets button{flex:1;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;background:transparent;color:var(--flesh);border:1px solid rgba(233,138,116,.45);padding:.32rem .3rem;cursor:pointer}
+.resets button:hover{background:var(--flesh);color:var(--ink)}
+.ctls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:14px}
+.ctl.wide{grid-column:1/-1}
+.pair button{padding:.2rem .45rem;font-size:13px}
+/* too dark */
+.toodark{position:fixed;left:50%;top:46%;z-index:9;pointer-events:none;font-family:var(--display);font-size:clamp(3rem,10vw,8rem);line-height:1;color:var(--bone);
+  text-shadow:4px 0 0 rgba(255,63,142,.85),-4px 0 0 rgba(95,211,207,.7),0 0 40px rgba(0,0,0,.9);transform:translate(-50%,-50%) rotate(-6deg);opacity:0;white-space:nowrap}
+.toodark.on{animation:dark 2.4s steps(1,end) forwards,darkmove 2.4s ease-out forwards}
+.toodark small{display:block;font-family:var(--mono);font-size:clamp(.7rem,1.3vw,.95rem);letter-spacing:.3em;text-transform:uppercase;color:var(--waters);text-shadow:none;margin-top:.8rem;text-align:center}
+@keyframes dark{0%{opacity:1}6%{opacity:0}10%{opacity:1}14%{opacity:.2}18%{opacity:1}80%{opacity:1}86%{opacity:0}90%{opacity:.6}100%{opacity:0}}
+@keyframes darkmove{0%{transform:translate(-50%,-50%) rotate(-6deg) scale(.7)}12%{transform:translate(-50%,-50%) rotate(-6deg) scale(1.08)}100%{transform:translate(-50%,-50%) rotate(-3deg) scale(1)}}
+@media (prefers-reduced-motion:reduce){.toodark.on{animation:dark 2.4s steps(1,end) forwards}}
+/* surface lab (reel I) */
+.mathlab{border:1px solid rgba(95,211,207,.4);padding:.8rem .9rem;display:flex;flex-direction:column;gap:.6rem;background:rgba(95,211,207,.04)}
+.mhead{display:flex;justify-content:space-between;align-items:baseline;gap:.6rem;flex-wrap:wrap}
+.mhead span{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--vhs)}
+.mhead output{font-family:var(--display);font-size:1.15rem;color:var(--bone)}
+.mathlab .seg button[aria-pressed="true"]{background:var(--vhs);border-color:var(--vhs)}
+.mrow{display:grid;grid-template-columns:auto minmax(0,1fr) 1.6em;align-items:center;gap:.3rem .6rem;font-family:var(--mono);font-size:12px}
+.mrow label{color:var(--bone-dim);letter-spacing:.1em}
+.mrow output{color:var(--bone);font-variant-numeric:tabular-nums;text-align:right}
+.mathlab input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:16px;background:transparent;margin:0;cursor:pointer;--p:50%}
+.mathlab input[type=range]::-webkit-slider-runnable-track{height:2px;background:linear-gradient(to right,var(--vhs) var(--p),rgba(241,230,216,.22) var(--p))}
+.mathlab input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:9px;height:16px;margin-top:-7px;background:var(--bone);border:0;clip-path:polygon(50% 0,100% 32%,100% 100%,0 100%,0 32%)}
+.mathlab input[type=range]::-moz-range-track{height:2px;background:rgba(241,230,216,.22)}
+.mathlab input[type=range]::-moz-range-progress{height:2px;background:var(--vhs)}
+.mathlab input[type=range]::-moz-range-thumb{width:9px;height:16px;border:0;border-radius:0;background:var(--bone)}
+.minv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;margin:0;background:rgba(241,230,216,.12);border:1px solid rgba(241,230,216,.12)}
+.minv div{background:rgba(14,9,11,.92);padding:.45rem .5rem}
+.minv dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-dim)}
+.minv dd{margin:0;font-family:var(--mono);font-size:13px;color:var(--vhs);font-variant-numeric:tabular-nums}
+.mnote{font-size:.93rem;color:var(--bone-dim);margin:0}
+.mnote b{color:var(--bone);font-weight:600}
+.win-cap{position:absolute;left:0;right:0;bottom:0;text-align:center;display:flex;flex-direction:column;gap:.25rem;align-items:center;padding-inline:8px}
+.win-cap strong{font-family:var(--display);font-weight:400;font-size:clamp(1.2rem,2.2vw,1.8rem);color:var(--bone);text-shadow:2px 0 0 rgba(255,63,142,.6),-2px 0 0 rgba(95,211,207,.5)}
+.win-cap code{font-family:var(--mono);font-size:clamp(10px,1vw,12px);color:var(--vhs);background:rgba(14,9,11,.75);padding:.2rem .5rem;max-width:100%;white-space:normal}
+@media (max-width:560px){.minv{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 /* ===== hero console ===== */
 .hero{position:relative;user-select:none;-webkit-user-select:none}
 body.on-hero .reels{opacity:0;visibility:hidden}
 .reels{transition:opacity .3s,visibility .3s}
-.rack{position:absolute;z-index:4;top:calc(env(safe-area-inset-top,0px) + 58px);right:0;width:282px;max-height:calc(100vh - 70px);overflow:auto;overscroll-behavior:contain;
+.rack{position:absolute;z-index:4;top:calc(env(safe-area-inset-top,0px) + 58px);right:0;width:340px;max-height:calc(100vh - 70px);overflow:auto;overscroll-behavior:contain;
   background:rgba(12,8,10,.8);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(241,230,216,.16);
   font-family:var(--mono);color:var(--bone);scrollbar-width:thin;scrollbar-color:rgba(255,63,142,.5) transparent;user-select:none;-webkit-user-select:none}
-.rack .rack-slate{display:flex;justify-content:space-between;gap:.5rem;padding:.45rem .8rem;background:var(--bone);color:var(--ink);font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+.rack .rack-slate{height:30px;box-sizing:border-box;align-items:center;display:flex;justify-content:space-between;gap:.5rem;padding:.45rem .8rem;background:var(--bone);color:var(--ink);font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
   background-image:repeating-linear-gradient(-45deg,transparent 0 12px,rgba(14,9,11,.08) 12px 24px);position:sticky;top:0;z-index:1}
 .rack .rack-slate em{font-style:normal;color:#b0145a}
 .rack-head{padding:.5rem .8rem .2rem;display:flex;align-items:baseline;justify-content:space-between;gap:.5rem}
@@ -222,10 +278,11 @@ body.tool-hand .hero,body.tool-hand #gl{cursor:none}
 .rack-foot{display:flex;justify-content:space-between;gap:.5rem;padding:.4rem .8rem .5rem;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-dim)}
 .rack-foot b{color:var(--waters);font-weight:500;font-variant-numeric:tabular-nums}
 .tip{font-size:10px;letter-spacing:.06em;color:var(--bone-dim);text-transform:none;line-height:1.4}
-@media (min-width:961px){.hero{padding-right:calc(282px + clamp(1rem,3vw,2.5rem))}}
+@media (min-width:961px){.hero{padding-right:calc(340px + clamp(1rem,3vw,2.5rem))}}
 @media (max-width:960px){
   .rack{position:relative;top:auto;right:auto;width:100%;max-height:none;margin-top:.8rem}
-  .ctls{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));column-gap:18px}
+  .dock{position:static}
+  .dock-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
 }
 
 @media (max-width:960px){
@@ -286,10 +343,29 @@ body.tool-hand .hero,body.tool-hand #gl{cursor:none}
   <aside class="rack" id="rack" aria-label="Specimen console">
     <div class="rack-slate"><span>Console</span><em>Specimen 0</em></div>
     <div class="rack-head"><strong>Hold and play.</strong><span>12 controls</span></div>
+    <div class="dock" role="group" aria-labelledby="l-tools" id="c-tools">
+      <div class="dock-head"><span class="lab" id="l-tools"><i>12</i>Instruments · keys 1–0 - =</span><output id="o-tool">Probe</output></div>
+      <div class="dock-grid">
+          <button type="button" data-v="probe" data-name="Probe" data-key="1" aria-pressed="true" class="" title="Probe (key 1)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 17 7l2.5-2.5"/><circle cx="4.5" cy="19.5" r="1.6"/></svg><span>Probe</span></button>
+          <button type="button" data-v="scalpel" data-name="Scalpel" data-key="2" aria-pressed="false" class="" title="Scalpel (key 2)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20c4-2 8-6 10-9l2 2c-3 3-7 6-12 7z"/><path d="M15 11l5-5"/></svg><span>Scalpel</span></button>
+          <button type="button" data-v="suture" data-name="Suture" data-key="3" aria-pressed="false" class="" title="Suture (key 3)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13a6 6 0 0 0 12 0"/><path d="M17 13c2-3 3-6 1-9"/><path d="M5 13l-1-2"/></svg><span>Suture</span></button>
+          <button type="button" data-v="cautery" data-name="Cautery" data-key="4" aria-pressed="false" class="" title="Cautery (key 4)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7l2.5-2.5"/><path d="M4 20l2-4 1.5 1.5z"/><path d="M3 13l2 .5M9 21l.5-2M2.5 17h2"/></svg><span>Cautery</span></button>
+          <button type="button" data-v="defib" data-name="Defibrillator" data-key="5" aria-pressed="false" class="" title="Defibrillator (key 5)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 5 13h6l-1 9 8-12h-6z"/></svg><span>Defib</span></button>
+          <button type="button" data-v="sword" data-name="Sword" data-key="6" aria-pressed="false" class="gore" title="Sword (key 6)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20 17 7l3-3"/><path d="M6.5 13.5l4 4"/><path d="M4 20l2-2"/></svg><span>Sword</span></button>
+          <button type="button" data-v="saw" data-name="Bone saw" data-key="7" aria-pressed="false" class="gore" title="Bone saw (key 7)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h13l4-4H7z"/><path d="M3 13l1 2 1-2 1 2 1-2 1 2 1-2 1 2 1-2 1 2 1-2 1 2 1-2"/></svg><span>Saw</span></button>
+          <button type="button" data-v="retractor" data-name="Claw retractor" data-key="8" aria-pressed="false" class="scifi" title="Claw retractor (key 8)"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="3.5" r="1.6"/><path d="M12 5v7M12 12l-5 7M12 12l5 7M12 12v8"/></svg><span>Retract</span></button>
+          <button type="button" data-v="bioport" data-name="Bio-port gun" data-key="9" aria-pressed="false" class="scifi" title="Bio-port gun (key 9)"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.6"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>Port</span></button>
+          <button type="button" data-v="tumorray" data-name="Tumor ray" data-key="0" aria-pressed="false" class="scifi" title="Tumor ray (key 0)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10h9l3-3v10l-3-3H3z"/><path d="M18 8.5l3-1.5M18 12h3.5M18 15.5l3 1.5"/></svg><span>Tumor</span></button>
+          <button type="button" data-v="leech" data-name="Leech pump" data-key="-" aria-pressed="false" class="scifi" title="Leech pump (key -)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 21h10l-1.5-8h-7z"/><circle cx="12" cy="8" r="4"/></svg><span>Leech</span></button>
+          <button type="button" data-v="transfuse" data-name="Transfusion" data-key="=" aria-pressed="false" class="" title="Transfusion (key =)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l2.5-2.5"/><path d="M6.5 17.5l8.5-8.5 2.5 2.5-8.5 8.5z"/><path d="M15 9l3-3M16.5 4.5l3 3"/></svg><span>Heal</span></button>
+      </div>
+      <p class="tip" id="tool-tip">Hold on the specimen to press in a dent. It stays.</p>
+      <div class="resets"><button type="button" class="reset" id="c-reset-tool">Reset this tool</button><button type="button" class="reset" id="c-reset">Reset all</button></div>
+    </div>
     <div class="ctls">
       <div class="ctl"><label for="c-freq"><i>01</i>Frequency</label><output id="o-freq" for="c-freq">1.05</output><input type="range" id="c-freq" min="0.3" max="4" step="0.01" value="1.05"></div>
       <div class="ctl"><label for="c-mag"><i>02</i>Magnitude</label><output id="o-mag" for="c-mag">0.13</output><input type="range" id="c-mag" min="0" max="0.55" step="0.005" value="0.13"></div>
-      <div class="ctl"><span class="lab" id="l-type"><i>03</i>Noise type</span><output id="o-type">Simplex</output>
+      <div class="ctl wide"><span class="lab" id="l-type"><i>03</i>Noise type</span><output id="o-type">Simplex</output>
         <div class="seg" role="group" aria-labelledby="l-type" id="c-type">
           <button type="button" data-v="0" aria-pressed="true" title="Simplex: soft organic swell">Simplex</button>
           <button type="button" data-v="1" aria-pressed="false" title="Ridged: scar tissue and tendons">Ridged</button>
@@ -297,7 +373,7 @@ body.tool-hand .hero,body.tool-hand #gl{cursor:none}
           <button type="button" data-v="3" aria-pressed="false" title="Worley: fat cells and blisters">Worley</button>
           <button type="button" data-v="4" aria-pressed="false" title="Domain warp: brain and gut folds">Warp</button>
         </div></div>
-      <div class="ctl"><span class="lab" id="l-color"><i>04</i>Color</span><output id="o-color">Fresh</output>
+      <div class="ctl wide"><span class="lab" id="l-color"><i>04</i>Color</span><output id="o-color">Fresh</output>
         <div class="sw" role="group" aria-labelledby="l-color" id="c-color">
           <button type="button" data-v="fresh" aria-pressed="true" aria-label="Fresh" title="Fresh" style="background:#d87a68"></button>
           <button type="button" data-v="necrotic" aria-pressed="false" aria-label="Necrotic" title="Necrotic" style="background:#8f8c5f"></button>
@@ -305,39 +381,22 @@ body.tool-hand .hero,body.tool-hand #gl{cursor:none}
           <button type="button" data-v="burn" aria-pressed="false" aria-label="Burn" title="Burn" style="background:#a0461c"></button>
           <button type="button" data-v="waters" aria-pressed="false" aria-label="Waters pink" title="Waters pink" style="background:#ff6fa8"></button>
         </div></div>
-      <div class="ctl"><label for="c-seed"><i>05</i>Tissue seed</label><output id="o-seed" for="c-seed">000</output>
-        <div class="pair"><input type="range" id="c-seed" min="0" max="999" step="1" value="0"><button type="button" id="c-reroll" title="New random tissue">Reroll</button></div></div>
+      <div class="ctl"><label for="c-seed"><i>05</i>Seed</label><output id="o-seed" for="c-seed">000</output>
+        <div class="pair"><input type="range" id="c-seed" min="0" max="999" step="1" value="0"><button type="button" id="c-reroll" title="New random tissue" aria-label="Reroll seed">⟳</button></div></div>
       <div class="ctl"><label for="c-dark"><i>06</i>Darkness</label><output id="o-dark" for="c-dark">0.30</output><input type="range" id="c-dark" min="0" max="1" step="0.01" value="0.3"></div>
       <div class="ctl"><label for="c-spike"><i>07</i>Spike</label><output id="o-spike" for="c-spike">0.00</output><input type="range" id="c-spike" min="0" max="1" step="0.01" value="0"></div>
-      <div class="ctl"><label for="c-cells"><i>08</i>Oval cells · Worley</label><output id="o-cells" for="c-cells">0.00</output><input type="range" id="c-cells" min="0" max="1" step="0.01" value="0"></div>
+      <div class="ctl"><label for="c-cells" title="Oval Worley cells"><i>08</i>Oval cells</label><output id="o-cells" for="c-cells">0.00</output><input type="range" id="c-cells" min="0" max="1" step="0.01" value="0"></div>
       <div class="ctl"><label for="c-grad"><i>09</i>Gradient</label><output id="o-grad" for="c-grad">0.25</output><input type="range" id="c-grad" min="0" max="1" step="0.01" value="0.25"></div>
-      <div class="ctl"><label for="c-spec"><i>10</i>Specularity</label><output id="o-spec" for="c-spec">0.55</output><input type="range" id="c-spec" min="0" max="1.5" step="0.01" value="0.55"></div>
-      <div class="ctl"><span class="lab" id="l-light"><i>11</i>Light</span><output id="o-light">1.00</output>
+      <div class="ctl"><label for="c-spec"><i>10</i>Specular</label><output id="o-spec" for="c-spec">0.55</output><input type="range" id="c-spec" min="0" max="1.5" step="0.01" value="0.55"></div>
+      <div class="ctl wide"><span class="lab" id="l-light"><i>11</i>Light · drag the lamp</span><output id="o-light">1.00</output>
         <div class="pad-wrap">
           <div class="pad" id="c-lightpad" tabindex="0" role="slider" aria-labelledby="l-light" aria-valuetext="Surgical lamp position" title="Drag to move the surgical lamp. Arrow keys work too."><b></b></div>
           <input type="range" id="c-lint" min="0.2" max="2" step="0.01" value="1" aria-label="Light intensity">
         </div></div>
-      <div class="ctl"><span class="lab" id="l-tools"><i>12</i>Instruments</span><output id="o-tool">Probe</output>
-        <div class="tools" role="group" aria-labelledby="l-tools" id="c-tools">
-          <button type="button" data-v="probe" aria-pressed="true">Probe</button>
-          <button type="button" data-v="scalpel" aria-pressed="false">Scalpel</button>
-          <button type="button" data-v="suture" aria-pressed="false">Suture</button>
-          <button type="button" data-v="cautery" aria-pressed="false">Cautery</button>
-          <button type="button" data-v="defib" aria-pressed="false">Defib</button>
-          <button type="button" data-v="sword" aria-pressed="false" class="gore">Sword</button>
-          <button type="button" data-v="saw" aria-pressed="false" class="gore">Saw</button>
-          <button type="button" data-v="retractor" aria-pressed="false" class="scifi">Retractor</button>
-          <button type="button" data-v="bioport" aria-pressed="false" class="scifi">Bio-port</button>
-          <button type="button" data-v="tumorray" aria-pressed="false" class="scifi">Tumor ray</button>
-          <button type="button" data-v="leech" aria-pressed="false" class="scifi">Leech</button>
-          <button type="button" data-v="transfuse" aria-pressed="false">Transfuse</button>
-          <button type="button" class="reset" id="c-reset-tool">Reset tool</button>
-          <button type="button" class="reset" id="c-reset">Reset all</button>
-        </div>
-        <span class="tip" id="tool-tip">Hold on the specimen to press in a dent. It stays.</span></div>
     </div>
     <div class="rack-foot"><span>HR <b id="f-hr">72</b></span><span>Wounds <b id="f-cuts">0</b></span><span>Marks <b id="f-burn">0/88</b></span></div>
   </aside>
+  <div class="toodark" id="toodark" aria-live="assertive"></div>
 </section>
 
 <section class="reel" id="reel-1" style="--accent:var(--vhs)">
@@ -352,6 +411,26 @@ body.tool-hand .hero,body.tool-hand #gl{cursor:none}
         <button class="btn" type="button" id="mode-wire" data-mode="wire" aria-pressed="false">Wireframe</button>
         <button class="btn" type="button" id="mode-normals" data-mode="normals" aria-pressed="false">Normals</button>
         <button class="btn" type="button" id="mode-shade" data-mode="shade" aria-pressed="true">Shaded</button>
+        <button class="btn" type="button" id="mode-curv" data-mode="curv" aria-pressed="false" title="Colour by Gaussian curvature K">Curvature K</button>
+      </div>
+      <div class="mathlab" id="mathlab">
+        <div class="mhead"><span>Surface lab</span><output id="m-name">T(2,3) · Trefoil knot</output></div>
+        <div class="seg" role="group" aria-label="Surface" id="m-shape">
+          <button type="button" data-v="knot" aria-pressed="true" title="Torus knot T(p,q)">Torus knot</button>
+          <button type="button" data-v="torus" aria-pressed="false" title="Torus with the (p,q) curve drawn on it">Torus T²</button>
+          <button type="button" data-v="mobius" aria-pressed="false" title="Möbius band">Möbius</button>
+          <button type="button" data-v="klein" aria-pressed="false" title="Klein bottle, figure-8 immersion">Klein</button>
+          <button type="button" data-v="pseudo" aria-pressed="false" title="Pseudosphere, curvature −1">Pseudosphere</button>
+        </div>
+        <div class="mrow"><label for="m-p">p · turns around the axis</label><input type="range" id="m-p" min="1" max="9" step="1" value="2"><output id="o-p">2</output></div>
+        <div class="mrow"><label for="m-q">q · turns through the hole</label><input type="range" id="m-q" min="1" max="9" step="1" value="3"><output id="o-q">3</output></div>
+        <dl class="minv">
+          <div><dt>Euler χ</dt><dd id="m-chi">0</dd></div>
+          <div><dt>Orientable</dt><dd id="m-ori">yes</dd></div>
+          <div><dt id="m-l3">Crossings</dt><dd id="m-v3">3</dd></div>
+          <div><dt>∫K dA</dt><dd id="m-ik">0.00</dd></div>
+        </dl>
+        <p class="mnote" id="m-note"></p>
       </div>
       <span class="hint">Press and hold on the model to lift it and see its wires</span>
       <ul class="credits-list">
@@ -369,7 +448,7 @@ body.tool-hand .hero,body.tool-hand #gl{cursor:none}
       </div>
     </div>
   </article>
-  <div class="win" aria-hidden="true"></div>
+  <div class="win" aria-hidden="true"><div class="win-cap"><strong id="m-cap">T(2,3) · Trefoil knot</strong><code id="m-eq"></code></div></div>
 </section>
 
 <section class="reel right" id="reel-2" style="--accent:var(--waters)">
@@ -921,7 +1000,15 @@ function endStroke(){curMark=-1;lastLp=null;strokeFount=false;}
   function group(id,fn){const g=$(id);g.querySelectorAll('button[data-v]').forEach(b=>b.addEventListener('click',()=>{g.querySelectorAll('button[data-v]').forEach(o=>o.setAttribute('aria-pressed',String(o===b)));fn(b.dataset.v,b);}));}
   group('c-type',(v,b)=>{fleshU.uType.value=+v;$('o-type').textContent=b.textContent;});
   group('c-color',v=>{const P=PRESETS[v];['skin','meat','blood','vein','grad'].forEach(k=>colTarget[k].set(P[k][0],P[k][1],P[k][2]));$('o-color').textContent=P.name;});
-  group('c-tools',(v,b)=>{tool=v;$('o-tool').textContent=b.textContent;$('tool-tip').textContent=toolTips[v];endStroke();});
+  group('c-tools',(v,b)=>{tool=v;$('o-tool').textContent=b.dataset.name;$('tool-tip').textContent=toolTips[v];endStroke();});
+  addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('input,textarea,[contenteditable]'))return;if(!document.body.classList.contains('on-hero'))return;
+    const b=document.querySelector('#c-tools button[data-key="'+e.key+'"]');if(b){b.click();}});
+  // too dark
+  const dk=$('toodark');let darkArmed=true;
+  function checkDark(){const d=parseFloat($('c-dark').value),li=parseFloat($('c-lint').value);const tooDark=d>=.97||(d>=.8&&li<=.3);
+    if(tooDark&&darkArmed){darkArmed=false;dk.innerHTML=['Too dark!','Lights, please.','Too dark!'][Math.floor(Math.random()*3)]+'<small>Even Cronenberg used a lamp</small>';dk.classList.remove('on');void dk.offsetWidth;dk.classList.add('on');}
+    if(!tooDark&&d<.85)darkArmed=true;}
+  $('c-dark').addEventListener('input',checkDark);$('c-lint').addEventListener('input',checkDark);
   $('c-reset-tool').addEventListener('click',()=>{if(tool==='suture'||tool==='transfuse')return;resetTypes(TOOL_TYPES[tool]);if(tool==='defib'){shock=0;bpm=72;}});
   $('c-reset').addEventListener('click',()=>{resetTypes([0,1,2,3,4,5,6,7,8]);fountains.length=0;shock=0;bpm=72;clearParticles(blood);clearParticles(gore);});
   const pad=$('c-lightpad');let lx=.7,ly=.2;
@@ -1045,18 +1132,100 @@ function heroTick(t,dt){
 
 /* ---------- 1: the pipeline viewport ---------- */
 const g1=stage(1);
-const knotGeo=new THREE.TorusKnotGeometry(1.1,0.34,220,32);
+
+/* Surface lab: every shape is a parametric (u,v) grid, so any shape can morph into any other */
+const SU=240,SV=40,NVX=(SU+1)*(SV+1),{PI,cos,sin}=Math;
+let kp=2,kq=3;
+const knotC=(t,o)=>{const r=1+.42*cos(kq*t);o.set(r*cos(kp*t),r*sin(kp*t),.42*sin(kq*t));return o;};
+const _c=new THREE.Vector3(),_c1=new THREE.Vector3(),_c2=new THREE.Vector3(),_T=new THREE.Vector3(),_N=new THREE.Vector3(),_B=new THREE.Vector3();
+const SHAPES={
+  torus:(u,v,o)=>{const th=2*PI*u,ph=2*PI*v,R=1.05,r=.45;return o.set((R+r*cos(ph))*cos(th),(R+r*cos(ph))*sin(th),r*sin(ph));},
+  knot:(u,v,o)=>{const t=2*PI*u,ph=2*PI*v,e=1e-3,a=.2;knotC(t,_c);knotC(t+e,_c1);knotC(t-e,_c2);_T.subVectors(_c1,_c2).normalize();
+    _N.set(_c.x-cos(kp*t),_c.y-sin(kp*t),_c.z);_N.addScaledVector(_T,-_T.dot(_N)).normalize();_B.crossVectors(_T,_N);
+    return o.copy(_c).addScaledVector(_N,a*cos(ph)).addScaledVector(_B,a*sin(ph));},
+  mobius:(u,v,o)=>{const th=2*PI*u,w=(v-.5)*1.05;return o.set((1.15+w*cos(th/2))*cos(th),(1.15+w*cos(th/2))*sin(th),w*sin(th/2));},
+  klein:(u,v,o)=>{const th=2*PI*u,w=2*PI*v,a=2.2,r=a+cos(th/2)*sin(w)-sin(th/2)*sin(2*w);return o.set(r*cos(th)*.5,r*sin(th)*.5,(sin(th/2)*sin(w)+cos(th/2)*sin(2*w))*.5);},
+  pseudo:(u,v,o)=>{const th=2*PI*u,w=(v-.5)*2,t=Math.sign(w||1)*(Math.abs(w)*2.75+.03),sh=1/Math.cosh(t);return o.set(sh*cos(th),t-Math.tanh(t),sh*sin(th));}
+};
+const INFO={
+  knot:()=>{const g=gcdI(kp,kq),unk=Math.min(kp,kq)===1;const cr=unk?0:Math.min(kp*(kq-1),kq*(kp-1));
+    return{name:`T(${kp},${kq}) · ${knotName(kp,kq)}`,chi:'0',ori:'yes',l3:g>1?'Components':'Crossings',v3:g>1?String(g):String(cr),
+    eq:`c(t) = ((R + r cos ${kq}t) cos ${kp}t,  (R + r cos ${kq}t) sin ${kp}t,  r sin ${kq}t)`,
+    note:g>1?`<b>p and q share a factor of ${g}</b>, so the curve closes early and you get a link of ${g} loops instead of one knot.`:unk?`<b>One of p, q is 1</b>, so this is the unknot: it can be untangled into a plain circle.`:
+    `A torus knot winds <b>${kp}</b> times around the axis and <b>${kq}</b> times through the hole. Its crossing number is ${cr} and its Seifert genus is ${(kp-1)*(kq-1)/2}. The tube around it is still a torus, so χ = 0.`};},
+  torus:()=>({name:`Torus T² with the (${kp},${kq}) curve`,chi:'0',ori:'yes',l3:'Genus',v3:'1',eq:'x = (R + r cos φ) cos θ,  y = (R + r cos φ) sin θ,  z = r sin φ',
+    note:`The pink line is the same (${kp},${kq}) curve drawn on the surface. Mirzakhani studied closed curves like this on <b>hyperbolic</b> surfaces of genus 2 and up, where K = −1, and counted how many simple closed geodesics each one has.`}),
+  mobius:()=>({name:'Möbius band',chi:'0',ori:'no',l3:'Boundary',v3:'1 loop',eq:'x = (1 + s cos θ/2) cos θ,  y = (1 + s cos θ/2) sin θ,  z = s sin θ/2',
+    note:'One side, one edge. Walk once around and you come back upside down. With an edge, Gauss–Bonnet needs a boundary term, so ∫K dA ≠ 2πχ here.'}),
+  klein:()=>({name:'Klein bottle',chi:'0',ori:'no',l3:'Boundary',v3:'none',eq:'r = a + cos(θ/2) sin v − sin(θ/2) sin 2v   (figure-8 immersion)',
+    note:'A closed surface with no inside. In 3D it has to pass through itself, so this is an immersion. Gauss–Bonnet still holds: ∫K dA = 2πχ = 0.'}),
+  pseudo:()=>({name:'Pseudosphere · K = −1',chi:'0',ori:'yes',l3:'Curvature',v3:'−1',eq:'x = sech t cos θ,  y = t − tanh t,  z = sech t sin θ',
+    note:'Every point has Gaussian curvature −1. It is a piece of the <b>hyperbolic plane</b>, the geometry Maryam Mirzakhani worked in. Switch the viewport to Curvature K: it turns teal everywhere. Here ∫K dA is just minus the area, because K = −1.'})
+};
+function gcdI(a,b){while(b){[a,b]=[b,a%b];}return a;}
+function knotName(p,q){const k=[Math.min(p,q),Math.max(p,q)].join(',');return({'2,3':'Trefoil knot','2,5':'Cinquefoil knot','2,7':'Septafoil knot','2,9':'9₁ knot','3,4':'8₁₉ knot','3,5':'10₁₂₄ knot','3,7':'14-crossing torus knot','4,5':'Torus knot 15ₙ','2,1':'Unknot','1,2':'Unknot'})[k]||'Torus knot';}
+// sample a shape: positions, curvature colours, and the Gauss–Bonnet integral
+const pinkC=new THREE.Color(0xff3f8e),tealC=new THREE.Color(0x5fd3cf),boneC=new THREE.Color(0xf1e6d8),_col=new THREE.Color();
+const f0=new THREE.Vector3(),fu1=new THREE.Vector3(),fu2=new THREE.Vector3(),fv1=new THREE.Vector3(),fv2=new THREE.Vector3(),fuv=new THREE.Vector3(),fuu=new THREE.Vector3(),fvv=new THREE.Vector3(),Fu=new THREE.Vector3(),Fv=new THREE.Vector3(),nn=new THREE.Vector3(),q1=new THREE.Vector3(),q2=new THREE.Vector3(),q3=new THREE.Vector3(),q4=new THREE.Vector3();
+function sampleShape(key){
+  const fn=SHAPES[key],pos=new Float32Array(NVX*3),col=new Float32Array(NVX*3),h=2e-3;let intK=0;
+  for(let i=0;i<=SU;i++)for(let j=0;j<=SV;j++){
+    const u=i/SU,v=j/SV,k=(i*(SV+1)+j)*3;
+    fn(u,v,f0);pos[k]=f0.x;pos[k+1]=f0.y;pos[k+2]=f0.z;
+    fn(u+h,v,fu1);fn(u-h,v,fu2);fn(u,v+h,fv1);fn(u,v-h,fv2);
+    Fu.subVectors(fu1,fu2).multiplyScalar(1/(2*h));Fv.subVectors(fv1,fv2).multiplyScalar(1/(2*h));
+    fuu.copy(fu1).add(fu2).addScaledVector(f0,-2).multiplyScalar(1/(h*h));fvv.copy(fv1).add(fv2).addScaledVector(f0,-2).multiplyScalar(1/(h*h));
+    fn(u+h,v+h,q1);fn(u+h,v-h,q2);fn(u-h,v+h,q3);fn(u-h,v-h,q4);fuv.copy(q1).sub(q2).sub(q3).add(q4).multiplyScalar(1/(4*h*h));
+    nn.crossVectors(Fu,Fv);const area=nn.length();nn.normalize();
+    const E=Fu.dot(Fu),F=Fu.dot(Fv),G=Fv.dot(Fv),L=fuu.dot(nn),M=fuv.dot(nn),N=fvv.dot(nn);
+    const K=(L*N-M*M)/Math.max(E*G-F*F,1e-9);
+    if(i<SU&&j<SV&&Math.abs(K)<60)intK+=K*area/(SU*SV);
+    const kk=Math.tanh(K*.7);_col.copy(boneC).lerp(kk>0?pinkC:tealC,Math.abs(kk));col[k]=_col.r;col[k+1]=_col.g;col[k+2]=_col.b;
+  }
+  return{pos,col,intK};
+}
+const surfGeo=new THREE.BufferGeometry();
+{const idx=[];for(let i=0;i<SU;i++)for(let j=0;j<SV;j++){const a=i*(SV+1)+j,b=(i+1)*(SV+1)+j;idx.push(a,b,a+1,b,b+1,a+1);}surfGeo.setIndex(idx);}
+let target=sampleShape('knot');
+surfGeo.setAttribute('position',new THREE.BufferAttribute(target.pos.slice(),3));
+surfGeo.setAttribute('color',new THREE.BufferAttribute(target.col.slice(),3));
+surfGeo.computeVertexNormals();
 const mats={
-  shade:new THREE.MeshStandardMaterial({color:0xe98a74,roughness:.32,metalness:.25}),
+  shade:new THREE.MeshStandardMaterial({color:0xe98a74,roughness:.32,metalness:.25,side:THREE.DoubleSide}),
   wire:new THREE.MeshBasicMaterial({color:0x5fd3cf,wireframe:true}),
-  normals:new THREE.MeshNormalMaterial()
+  normals:new THREE.MeshNormalMaterial({side:THREE.DoubleSide}),
+  curv:new THREE.MeshStandardMaterial({vertexColors:true,roughness:.4,metalness:.1,side:THREE.DoubleSide})
 };
 const knotRig=new THREE.Group();g1.add(knotRig);
-const knot=new THREE.Mesh(knotGeo,mats.shade);knotRig.add(knot);
-const shell=new THREE.Mesh(new THREE.TorusKnotGeometry(1.1,0.34,110,16),new THREE.MeshBasicMaterial({color:0x5fd3cf,wireframe:true,transparent:true,opacity:0}));
-knotRig.add(shell);
-const core=new THREE.Mesh(new THREE.TorusKnotGeometry(1.1,0.1,160,12),new THREE.MeshNormalMaterial({transparent:true,opacity:0}));
-knotRig.add(core);
+const knot=new THREE.Mesh(surfGeo,mats.shade);knotRig.add(knot);
+const shell=new THREE.Mesh(surfGeo,new THREE.MeshBasicMaterial({color:0x5fd3cf,wireframe:true,transparent:true,opacity:0}));knotRig.add(shell);
+const coreMat=new THREE.MeshBasicMaterial({color:0xff3f8e,transparent:true,opacity:0});
+const core=new THREE.Mesh(new THREE.BufferGeometry(),coreMat);knotRig.add(core);
+let shapeKey='knot',morph=1,fromPos=null,fromCol=null;
+function rebuildCore(){
+  const pts=[];const onTorus=shapeKey==='torus';
+  for(let k=0;k<=480;k++){const t=k/480*2*PI;if(onTorus){const R=1.05,r=.47;pts.push(new THREE.Vector3((R+r*cos(kq*t))*cos(kp*t),(R+r*cos(kq*t))*sin(kp*t),r*sin(kq*t)));}else pts.push(knotC(t,new THREE.Vector3()));}
+  core.geometry.dispose();core.geometry=new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts,true),480,onTorus?.025:.05,8,true);
+}
+const $m=id=>document.getElementById(id);
+function showInfo(){const I=INFO[shapeKey]();$m('m-name').textContent=I.name;$m('m-cap').textContent=I.name;$m('m-eq').textContent=I.eq;$m('m-chi').textContent=I.chi;$m('m-ori').textContent=I.ori;
+  $m('m-l3').textContent=I.l3;$m('m-v3').textContent=I.v3;$m('m-note').innerHTML=I.note;$m('m-ik').textContent=(Math.abs(target.intK)<.005?0:target.intK).toFixed(2);
+  const pq=shapeKey==='knot'||shapeKey==='torus';['m-p','m-q'].forEach(id=>{$m(id).disabled=!pq;$m(id).closest('.mrow').style.opacity=pq?1:.35;});}
+function goShape(key){
+  fromPos=surfGeo.attributes.position.array.slice();fromCol=surfGeo.attributes.color.array.slice();
+  shapeKey=key;target=sampleShape(key);morph=0;rebuildCore();showInfo();
+}
+document.querySelectorAll('#m-shape button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('#m-shape button').forEach(o=>o.setAttribute('aria-pressed',String(o===b)));goShape(b.dataset.v);}));
+['p','q'].forEach(k=>{const el=$m('m-'+k),out=$m('o-'+k);const fill=()=>el.style.setProperty('--p',((el.value-el.min)/(el.max-el.min)*100)+'%');
+  el.addEventListener('input',()=>{out.textContent=el.value;fill();if(k==='p')kp=+el.value;else kq=+el.value;goShape(shapeKey);});fill();});
+rebuildCore();showInfo();
+function stepMorph(dt){
+  if(morph>=1)return;
+  morph=Math.min(1,morph+dt/1.1);const e=morph<.5?4*morph*morph*morph:1-Math.pow(-2*morph+2,3)/2;
+  const P=surfGeo.attributes.position.array,C=surfGeo.attributes.color.array,tp=target.pos,tc=target.col;
+  for(let i=0;i<P.length;i++){P[i]=fromPos[i]+(tp[i]-fromPos[i])*e;C[i]=fromCol[i]+(tc[i]-fromCol[i])*e;}
+  surfGeo.attributes.position.needsUpdate=true;surfGeo.attributes.color.needsUpdate=true;surfGeo.computeVertexNormals();
+}
 const grid=new THREE.GridHelper(8,16,0x5fd3cf,0x3a2830);grid.position.y=-2.2;g1.add(grid);
 const props=[];
 [[0xff3f8e,new THREE.BoxGeometry(.32,.32,.32)],[0xf1e6d8,new THREE.SphereGeometry(.2,24,16)],[0x5fd3cf,new THREE.ConeGeometry(.2,.4,4)]].forEach((p,i)=>{
@@ -1545,7 +1714,8 @@ function tick(){
     const want=(pressed&&inRect(rects[1],px,py))?1:0;lift+=(want-lift)*Math.min(1,dt*5);
     knotRig.position.y=lift*1.35;knotRig.scale.setScalar(1+lift*.22);
     knot.rotation.set(t*.25,t*(.35+lift*.8),0);shell.rotation.copy(knot.rotation);core.rotation.copy(knot.rotation);
-    shell.scale.setScalar(1+lift*.14);shell.material.opacity=lift*.9;core.material.opacity=lift;
+    stepMorph(dt);
+    shell.scale.setScalar(1+lift*.14);shell.material.opacity=lift*.9;core.material.opacity=shapeKey==='torus'?1:shapeKey==='knot'?lift:0;core.visible=core.material.opacity>.01;
     knot.material.transparent=true;knot.material.opacity=1-lift*.55;
     grid.material.opacity=1;
     props.forEach(p=>{const a=t*.6+p.userData.a;p.position.set(Math.cos(a)*2.4,Math.sin(a*1.3)*.6+lift*1.1,Math.sin(a)*2.4);p.rotation.set(t,t*.7,0);});
