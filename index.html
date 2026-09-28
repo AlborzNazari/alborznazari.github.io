@@ -209,9 +209,16 @@ body.on-hero .reels{opacity:0;visibility:hidden}
   repeating-linear-gradient(0deg,transparent 0 11px,rgba(241,230,216,.06) 11px 12px),repeating-linear-gradient(90deg,transparent 0 11px,rgba(241,230,216,.06) 11px 12px)}
 .pad b{position:absolute;left:var(--lx,70%);top:var(--ly,20%);width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#fff4ea;box-shadow:0 0 12px 3px rgba(255,220,200,.8)}
 .pad:focus-visible{outline:1px solid var(--vhs);outline-offset:2px}
-.tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}
-.tools button{padding:.34rem .2rem}
-.tools .reset{grid-column:span 1;color:var(--flesh);border-color:rgba(233,138,116,.45)}
+.tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px}
+.tools .reset{grid-column:span 2}
+.tools .gore{border-color:rgba(255,42,58,.5)}
+.tools .scifi{border-color:rgba(201,162,76,.55)}
+body.tool-hand .hero,body.tool-hand #gl{cursor:none}
+.pop{position:fixed;z-index:8;pointer-events:none;font-family:var(--display);font-size:clamp(1.6rem,3vw,2.4rem);color:var(--waters);text-shadow:3px 3px 0 var(--ink),-1px -1px 0 var(--ink);white-space:nowrap;animation:popup .95s ease-out forwards}
+@keyframes popup{0%{opacity:0;transform:translate(-50%,-30%) scale(.6) rotate(-8deg)}15%{opacity:1;transform:translate(-50%,-70%) scale(1.1) rotate(-8deg)}100%{opacity:0;transform:translate(-50%,-160%) scale(1) rotate(-4deg)}}
+@media (prefers-reduced-motion:reduce){.pop{animation:none;opacity:0}}
+.tools button{padding:.34rem .1rem;font-size:9px;letter-spacing:.04em}
+.tools .reset{color:var(--flesh);border-color:rgba(233,138,116,.45)}
 .rack-foot{display:flex;justify-content:space-between;gap:.5rem;padding:.4rem .8rem .5rem;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--bone-dim)}
 .rack-foot b{color:var(--waters);font-weight:500;font-variant-numeric:tabular-nums}
 .tip{font-size:10px;letter-spacing:.06em;color:var(--bone-dim);text-transform:none;line-height:1.4}
@@ -310,18 +317,26 @@ body.on-hero .reels{opacity:0;visibility:hidden}
           <div class="pad" id="c-lightpad" tabindex="0" role="slider" aria-labelledby="l-light" aria-valuetext="Surgical lamp position" title="Drag to move the surgical lamp. Arrow keys work too."><b></b></div>
           <input type="range" id="c-lint" min="0.2" max="2" step="0.01" value="1" aria-label="Light intensity">
         </div></div>
-      <div class="ctl"><span class="lab" id="l-tools"><i>12</i>Triage tools</span><output id="o-tool">Probe</output>
+      <div class="ctl"><span class="lab" id="l-tools"><i>12</i>Instruments</span><output id="o-tool">Probe</output>
         <div class="tools" role="group" aria-labelledby="l-tools" id="c-tools">
-          <button type="button" data-v="probe" aria-pressed="true" title="Hold to press a wound into the tissue">Probe</button>
-          <button type="button" data-v="scalpel" aria-pressed="false" title="Hold and drag to cut">Scalpel</button>
-          <button type="button" data-v="suture" aria-pressed="false" title="Hold over a cut to close it">Suture</button>
-          <button type="button" data-v="defib" aria-pressed="false" title="Click the specimen to shock it">Defib</button>
-          <button type="button" data-v="cautery" aria-pressed="false" title="Hold to sear and blacken">Cautery</button>
-          <button type="button" class="reset" id="c-reset" title="Close every wound">Reset</button>
+          <button type="button" data-v="probe" aria-pressed="true">Probe</button>
+          <button type="button" data-v="scalpel" aria-pressed="false">Scalpel</button>
+          <button type="button" data-v="suture" aria-pressed="false">Suture</button>
+          <button type="button" data-v="cautery" aria-pressed="false">Cautery</button>
+          <button type="button" data-v="defib" aria-pressed="false">Defib</button>
+          <button type="button" data-v="sword" aria-pressed="false" class="gore">Sword</button>
+          <button type="button" data-v="saw" aria-pressed="false" class="gore">Saw</button>
+          <button type="button" data-v="retractor" aria-pressed="false" class="scifi">Retractor</button>
+          <button type="button" data-v="bioport" aria-pressed="false" class="scifi">Bio-port</button>
+          <button type="button" data-v="tumorray" aria-pressed="false" class="scifi">Tumor ray</button>
+          <button type="button" data-v="leech" aria-pressed="false" class="scifi">Leech</button>
+          <button type="button" data-v="transfuse" aria-pressed="false">Transfuse</button>
+          <button type="button" class="reset" id="c-reset-tool">Reset tool</button>
+          <button type="button" class="reset" id="c-reset">Reset all</button>
         </div>
-        <span class="tip" id="tool-tip">Hold on the specimen to press a wound.</span></div>
+        <span class="tip" id="tool-tip">Hold on the specimen to press in a dent. It stays.</span></div>
     </div>
-    <div class="rack-foot"><span>HR <b id="f-hr">72</b></span><span>Cuts <b id="f-cuts">0</b></span><span>Burns <b id="f-burn">0</b></span></div>
+    <div class="rack-foot"><span>HR <b id="f-hr">72</b></span><span>Wounds <b id="f-cuts">0</b></span><span>Marks <b id="f-burn">0/88</b></span></div>
   </aside>
 </section>
 
@@ -571,10 +586,10 @@ float snoise(vec3 v){
 const mouse=new THREE.Vector2(0,0),ray=new THREE.Raycaster();let pointerIn=false,pressed=false,px=-1,py=-1;
 /* ---------- 0: the new flesh, on the operating table ---------- */
 const g0=stage(0);
-const RAD=1.9,NCUT=40,NBURN=24;
-const cutArr=[],cutTarget=[],burnArr=[],burnTarget=[];
-for(let i=0;i<NCUT;i++){cutArr.push(new THREE.Vector4(0,0,0,0));cutTarget.push(0);}
-for(let i=0;i<NBURN;i++){burnArr.push(new THREE.Vector4(0,0,0,0));burnTarget.push(0);}
+const RAD=1.9,NMARK=88;
+/* mark types: 0 probe dent, 1 scalpel, 2 burn, 3 sword, 4 saw, 5 retractor, 6 bio-port, 7 tumor, 8 leech bruise */
+const marks=[],markU=[];let markAge=0;
+for(let i=0;i<NMARK;i++){marks.push({ty:0,s:0,t:0,x:0,y:0,z:0,age:0});markU.push(new THREE.Vector4(0,0,0,0));}
 const PRESETS={
   fresh:{name:'Fresh',skin:[.86,.47,.40],meat:[.55,.08,.10],blood:[.20,.005,.025],vein:[.32,.05,.16],grad:[.30,.06,.22]},
   necrotic:{name:'Necrotic',skin:[.58,.56,.40],meat:[.32,.30,.14],blood:[.07,.06,.02],vein:[.20,.24,.10],grad:[.10,.14,.06]},
@@ -587,12 +602,12 @@ const colTarget={};['skin','meat','blood','vein','grad'].forEach(k=>colTarget[k]
 const fleshU={
   uTime:{value:0},uBeat:{value:0},uAmp:{value:.13},uFreq:{value:1.05},uType:{value:0},uSeed:{value:0},
   uSpike:{value:0},uCells:{value:0},uPoke:{value:new THREE.Vector3(0,0,RAD)},uWound:{value:0},uShock:{value:0},
-  uCuts:{value:cutArr},uBurns:{value:burnArr},
+  uMarks:{value:markU},
   uSkin:{value:v3(PRESETS.fresh.skin)},uMeat:{value:v3(PRESETS.fresh.meat)},uBlood:{value:v3(PRESETS.fresh.blood)},
   uVein:{value:v3(PRESETS.fresh.vein)},uGradCol:{value:v3(PRESETS.fresh.grad)},
   uDark:{value:.3},uGrad:{value:.25},uSpec:{value:.55},uL1:{value:new THREE.Vector3(.5,.8,.6).normalize()},uLI:{value:1}
 };
-const DEFS=`#define NCUT ${NCUT}\n#define NBURN ${NBURN}\n#define RAD ${RAD.toFixed(2)}\n`;
+const DEFS=`#define NMARK ${NMARK}\n#define RAD ${RAD.toFixed(2)}\n`;
 const CELL=`
 vec3 hash3(vec3 p){return fract(sin(vec3(dot(p,vec3(127.1,311.7,74.7)),dot(p,vec3(269.5,183.3,246.1)),dot(p,vec3(113.5,271.9,124.6))))*43758.5453);}
 vec2 worley(vec3 p,float t){
@@ -604,12 +619,13 @@ vec2 worley(vec3 p,float t){
   }
   return sqrt(vec2(F1,F2));
 }`;
-const flesh=new THREE.Mesh(new THREE.IcosahedronGeometry(RAD,40),new THREE.ShaderMaterial({
+const flesh=new THREE.Mesh(new THREE.IcosahedronGeometry(RAD,36),new THREE.ShaderMaterial({
   uniforms:fleshU,
   vertexShader:DEFS+NOISE+CELL+`
   uniform float uTime,uBeat,uAmp,uFreq,uType,uSeed,uSpike,uCells,uWound,uShock;
-  uniform vec3 uPoke;uniform vec4 uCuts[NCUT];uniform vec4 uBurns[NBURN];
-  varying vec3 vPos;varying vec3 vNorm;varying vec3 vView;varying float vD;varying float vW;varying float vCell;varying float vY;varying float vBurn;
+  uniform vec3 uPoke;uniform vec4 uMarks[NMARK];
+  varying vec3 vPos;varying vec3 vNorm;varying vec3 vView;varying float vD;varying float vW;varying float vCell;varying float vY;
+  varying float vBurn;varying float vBio;varying float vTum;varying float vBru;
   float field(vec3 q){
     float t=uTime*.05;
     if(uType<.5)return snoise(q+t);
@@ -619,9 +635,30 @@ const flesh=new THREE.Mesh(new THREE.IcosahedronGeometry(RAD,40),new THREE.Shade
     vec3 w=vec3(snoise(q+vec3(0.,t,0.)),snoise(q+vec3(5.2,1.3,t)),snoise(q+vec3(9.1,t,2.8)));
     return snoise(q*1.2+1.8*w)*1.05;
   }
-  float cutAt(vec3 p){float c=0.;for(int i=0;i<NCUT;i++){vec4 k=uCuts[i];if(k.w>.001)c=max(c,(1.-smoothstep(0.,.12,distance(p,k.xyz)))*k.w);}return c;}
-  float burnAt(vec3 p){float c=0.;for(int i=0;i<NBURN;i++){vec4 k=uBurns[i];if(k.w>.001)c=max(c,(1.-smoothstep(0.,.34,distance(p,k.xyz)))*k.w);}return c;}
-  float disp(vec3 p,out float ce){
+  void marksAt(vec3 p,out float dd,out float raw,out float burn,out float bio,out float tum,out float bru){
+    dd=0.;raw=0.;burn=0.;bio=0.;tum=0.;bru=0.;
+    for(int i=0;i<NMARK;i++){
+      vec4 m=uMarks[i];
+      if(m.w>.001){
+        float ty=floor(m.w*.1+.0001);float s=m.w-ty*10.;
+        if(s>.001){
+          float d=distance(p,m.xyz);
+          if(d<.7){
+            if(ty<.5){float f=1.-smoothstep(0.,.55,d);f*=f;dd-=f*.42*s;raw=max(raw,f*s*.9);}
+            else if(ty<1.5){float f=1.-smoothstep(0.,.11,d);dd-=f*.3*s;raw=max(raw,f*s*1.25);}
+            else if(ty<2.5){float f=1.-smoothstep(0.,.34,d);dd-=f*.07*s;burn=max(burn,f*s);}
+            else if(ty<3.5){float f=1.-smoothstep(0.,.17,d);dd-=f*.62*s;raw=max(raw,f*s*1.45);}
+            else if(ty<4.5){float f=1.-smoothstep(0.,.21,d);f*=.75+.25*sin(d*90.);dd-=f*.5*s;raw=max(raw,f*s*1.3);}
+            else if(ty<5.5){float f=1.-smoothstep(0.,.42,d);float lip=smoothstep(.2,.38,d)*(1.-smoothstep(.38,.52,d));dd+=-f*f*.95*s+lip*.16*s;raw=max(raw,f*s*1.35);}
+            else if(ty<6.5){float ring=smoothstep(.1,.15,d)*(1.-smoothstep(.2,.26,d));float hole=1.-smoothstep(.05,.11,d);dd+=(ring*.1-hole*.45)*s;bio=max(bio,max(ring,hole*.9)*s);raw=max(raw,hole*s*.6);}
+            else if(ty<7.5){float f=1.-smoothstep(0.,.62,d);float lump=f*f*(3.-2.*f);dd+=lump*.6*s*(.8+.35*snoise(p*5.+m.xyz*3.));tum=max(tum,f*s);}
+            else{float f=1.-smoothstep(0.,.38,d);dd-=f*f*.3*s;bru=max(bru,f*s);}
+          }
+        }
+      }
+    }
+  }
+  float disp(vec3 p,out float ce,out float raw,out float burn,out float bio,out float tum,out float bru){
     vec3 n=normalize(p);vec3 q=n*uFreq+uSeed;
     float d=field(q)*uAmp;
     d+=snoise(n*uFreq*2.3-uTime*.035+uSeed)*uAmp*.3;
@@ -634,23 +671,22 @@ const flesh=new THREE.Mesh(new THREE.IcosahedronGeometry(RAD,40),new THREE.Shade
       ce=(1.-smoothstep(0.,.1,w.y-w.x))*uCells;d-=ce*.045;
     }
     float w0=1.-smoothstep(0.,.95,distance(p,uPoke));
-    d-=w0*w0*.62*uWound;
-    d+=smoothstep(.55,.2,abs(distance(p,uPoke)-.8))*.07*uWound;
-    d-=cutAt(p)*.3;
-    d-=burnAt(p)*.07;
+    d-=w0*w0*.3*uWound;
+    float dd;marksAt(p,dd,raw,burn,bio,tum,bru);
+    d+=dd;
     d+=snoise(n*9.+uTime*22.)*.06*uShock;
     return d;
   }
   void main(){
-    vec3 n=normalize(position);float ce,dum;
-    float d0=disp(position,ce);
+    vec3 n=normalize(position);float ce,raw,burn,bio,tum,bru,a1,a2,a3,a4,a5,a6;
+    float d0=disp(position,ce,raw,burn,bio,tum,bru);
     vec3 p=position+n*d0;
     vec3 t=normalize(cross(n,vec3(0.,1.,.001)));vec3 b=cross(n,t);
     vec3 qa=normalize(position+t*.03)*RAD;vec3 qb=normalize(position+b*.03)*RAD;
-    vec3 pa=qa+normalize(qa)*disp(qa,dum);vec3 pb=qb+normalize(qb)*disp(qb,dum);
+    vec3 pa=qa+normalize(qa)*disp(qa,a1,a2,a3,a4,a5,a6);vec3 pb=qb+normalize(qb)*disp(qb,a1,a2,a3,a4,a5,a6);
     vec3 N=normalize(cross(pa-p,pb-p));
     float w0=1.-smoothstep(0.,.95,distance(position,uPoke));
-    vD=d0;vW=max(w0*uWound,cutAt(position)*1.25);vCell=ce;vY=position.y/RAD;vBurn=burnAt(position);vPos=p;
+    vD=d0;vW=max(w0*uWound*.5,raw);vCell=ce;vY=position.y/RAD;vBurn=burn;vBio=bio;vTum=tum;vBru=bru;vPos=p;
     vec4 mv=modelViewMatrix*vec4(p,1.);
     vView=-mv.xyz;vNorm=normalMatrix*N;
     gl_Position=projectionMatrix*mv;
@@ -658,35 +694,40 @@ const flesh=new THREE.Mesh(new THREE.IcosahedronGeometry(RAD,40),new THREE.Shade
   fragmentShader:NOISE+`
   uniform float uTime,uDark,uGrad,uSpec,uLI,uShock;
   uniform vec3 uSkin,uMeat,uBlood,uVein,uGradCol,uL1;
-  varying vec3 vPos;varying vec3 vNorm;varying vec3 vView;varying float vD;varying float vW;varying float vCell;varying float vY;varying float vBurn;
+  varying vec3 vPos;varying vec3 vNorm;varying vec3 vView;varying float vD;varying float vW;varying float vCell;varying float vY;
+  varying float vBurn;varying float vBio;varying float vTum;varying float vBru;
   void main(){
     vec3 N=normalize(vNorm);vec3 V=normalize(vView);
     vec3 L1=normalize(uL1);vec3 L2=normalize(vec3(-.7,-.2,.4));
     vec3 base=mix(uMeat,uSkin,smoothstep(-.12,.16,vD));
-    float veinA=pow(1.-abs(snoise(vPos*1.6+vec3(0.,uTime*.02,0.))),14.);
-    float veinB=pow(1.-abs(snoise(vPos*4.2+7.)),18.);
+    float veinA=pow(1.-abs(snoise(vPos*1.6+vec3(0.,uTime*.02,0.))),14.-vTum*8.);
+    float veinB=pow(1.-abs(snoise(vPos*4.2+7.)),18.-vTum*10.);
     base=mix(base,uVein,clamp(veinA*.75+veinB*.45,0.,1.));
     base*=.9+.1*(snoise(vPos*38.)*.5+.5);
     base=mix(base,uVein*.7,clamp(vCell,0.,1.)*.75);
     float g=smoothstep(.55,-1.,vY);base=mix(base,uGradCol,g*uGrad);
     float rimG=pow(1.-abs(dot(N,V)),1.5);base=mix(base,uGradCol*1.2,rimG*uGrad*.35);
-    vec3 raw=mix(vec3(.75,.02,.06),uBlood,smoothstep(.2,.85,vW));
+    base=mix(base,mix(vec3(.42,.1,.28),vec3(.62,.3,.4),veinB),smoothstep(.1,.8,vTum)*.75);
+    base=mix(base,mix(vec3(.5,.45,.18),vec3(.22,.06,.28),smoothstep(.15,.6,vBru)),smoothstep(.03,.25,vBru)*.85);
+    vec3 raw=mix(vec3(.75,.02,.06),uBlood,smoothstep(.2,.95,vW));
     base=mix(base,raw,smoothstep(.05,.35,vW));
     float crevice=smoothstep(.02,-.14,vD);
     base=mix(base,uBlood,crevice*(.35+.6*uDark));
     float charN=snoise(vPos*14.)*.5+.5;
     vec3 charCol=mix(vec3(.05,.03,.025),vec3(.35,.12,.05),smoothstep(.55,1.,charN)*(1.-vBurn));
     base=mix(base,charCol,smoothstep(.05,.6,vBurn));
+    base=mix(base,vec3(.13,.11,.16),smoothstep(.2,.7,vBio));
     float wrap=(dot(N,L1)+.45)/1.45;
     float amb=.14*(1.-uDark);
     float diff=max(wrap,0.)*.85*uLI+max(dot(N,L2),0.)*.18*(1.-uDark*.7)+amb;
     vec3 sss=vec3(1.,.18,.2)*pow(1.-abs(dot(N,V)),2.)*.45*(1.-uDark*.5);
-    float wet=(.55+vW*.9+crevice*.3)*uSpec*1.8*(1.-vBurn*.85);
+    float wet=(.55+vW*.9+crevice*.3+vBio*1.2)*uSpec*1.8*(1.-vBurn*.85);
     vec3 H=normalize(L1+V);
     float spec=(pow(max(dot(N,H),0.),90.)*1.6*wet+pow(max(dot(N,H),0.),14.)*.12*uSpec)*uLI;
     float fr=pow(1.-max(dot(N,V),0.),2.4);
     vec3 c=base*diff+sss*base*1.4+vec3(1.,.93,.9)*spec+vec3(1.,.25,.56)*fr*.55*(1.-uDark*.6);
     c+=vec3(1.,.35,.05)*smoothstep(.75,1.,vBurn)*smoothstep(.6,1.,charN)*.6;
+    c+=vec3(.3,.9,.85)*smoothstep(.75,1.,vBio)*(.5+.5*sin(uTime*4.))*.45;
     c+=vec3(.4,.9,1.)*uShock*(.2+fr);
     c*=mix(1.,.55,uDark);
     gl_FragColor=vec4(pow(max(c,0.),vec3(.95)),1.);
@@ -697,11 +738,18 @@ const fleshProxy=new THREE.Mesh(new THREE.IcosahedronGeometry(RAD,3),new THREE.M
 fleshProxy.visible=false;flesh.add(fleshProxy);
 let woundTarget=0;
 
-/* the operating theatre: lamp, drip, monitor, cords, tray */
-const theatre=new THREE.Group();g0.add(theatre);
+/* ---------- materials ---------- */
 const steel=new THREE.MeshStandardMaterial({color:0xa9b0b4,metalness:.85,roughness:.25});
 const darkSteel=new THREE.MeshStandardMaterial({color:0x2c2629,metalness:.65,roughness:.4});
-// surgical lamp, driven by the light pad
+const gold=new THREE.MeshStandardMaterial({color:0xcaa24c,metalness:1,roughness:.22});
+const rubber=new THREE.MeshStandardMaterial({color:0x1a1416,roughness:.8});
+const gristle=new THREE.MeshStandardMaterial({color:0xb4586a,roughness:.35,emissive:0x1a0206});
+const glass=new THREE.MeshStandardMaterial({color:0xdfeff2,transparent:true,opacity:.35,roughness:.05,metalness:.1,depthWrite:false});
+const bloodMat=new THREE.MeshStandardMaterial({color:0x8e0c20,roughness:.2,emissive:0x2a0006});
+const tealGlow=new THREE.MeshBasicMaterial({color:0x5fd3cf});
+
+/* ---------- the operating theatre ---------- */
+const theatre=new THREE.Group();g0.add(theatre);
 const lamp=new THREE.Group();theatre.add(lamp);
 const lampArm=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,3.4,10),darkSteel);lampArm.position.y=1.9;lamp.add(lampArm);
 const lampJoint=new THREE.Mesh(new THREE.SphereGeometry(.08,14,10),steel);lampJoint.position.y=.55;lamp.add(lampJoint);
@@ -709,7 +757,6 @@ const dish=new THREE.Mesh(new THREE.SphereGeometry(.62,36,14,0,Math.PI*2,0,Math.
 const lampGlow=new THREE.Mesh(new THREE.CircleGeometry(.5,36),new THREE.MeshBasicMaterial({color:0xfff3e8}));lampGlow.rotation.x=Math.PI/2;lampGlow.position.y=.2;lamp.add(lampGlow);
 for(let k=0;k<6;k++){const a=k/6*Math.PI*2;const bulb=new THREE.Mesh(new THREE.CircleGeometry(.07,16),new THREE.MeshBasicMaterial({color:0xffffff}));bulb.rotation.x=Math.PI/2;bulb.position.set(Math.cos(a)*.28,.19,Math.sin(a)*.28);lamp.add(bulb);}
 const lampLight=new THREE.SpotLight(0xfff0e6,1.3,14,.55,.6);lamp.add(lampLight);lampLight.target=flesh;
-// IV pole with blood bag and ECG monitor
 const iv=new THREE.Group();iv.position.set(2.65,0,-1.3);theatre.add(iv);
 const pole=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,6,10),steel);pole.position.y=-.2;iv.add(pole);
 const hook=new THREE.Mesh(new THREE.TorusGeometry(.12,.015,8,20,Math.PI),steel);hook.position.set(0,2.72,0);iv.add(hook);
@@ -718,7 +765,7 @@ bag.scale.set(.62,1,.24);bag.position.set(0,2.05,0);iv.add(bag);
 const bagLabel=new THREE.Mesh(new THREE.PlaneGeometry(.34,.22),new THREE.MeshBasicMaterial({color:0xf1e6d8}));bagLabel.position.set(0,2.1,.125);iv.add(bagLabel);
 const chamber=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.22,12),new THREE.MeshStandardMaterial({color:0xd9e8ea,transparent:true,opacity:.5}));chamber.position.set(0,1.45,0);iv.add(chamber);
 const tubeCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(2.65,1.33,-1.3),new THREE.Vector3(2.45,.4,-.8),new THREE.Vector3(1.95,.45,.05),new THREE.Vector3(1.35,.42,.55)]);
-const ivTube=new THREE.Mesh(new THREE.TubeGeometry(tubeCurve,60,.022,8,false),new THREE.MeshStandardMaterial({color:0xb4102c,roughness:.2,transparent:true,opacity:.8}));theatre.add(ivTube);
+theatre.add(new THREE.Mesh(new THREE.TubeGeometry(tubeCurve,60,.022,8,false),new THREE.MeshStandardMaterial({color:0xb4102c,roughness:.2,transparent:true,opacity:.8})));
 const drops=[];for(let k=0;k<6;k++){const d=new THREE.Mesh(new THREE.SphereGeometry(.028,8,6),new THREE.MeshBasicMaterial({color:0xff2a3a}));d.userData.t=k/6;theatre.add(d);drops.push(d);}
 const monitorBox=new THREE.Mesh(new THREE.BoxGeometry(1.15,.78,.3),darkSteel);monitorBox.position.set(0,-.95,.22);iv.add(monitorBox);
 const EW=320,EH=210,ecan=document.createElement('canvas');ecan.width=EW;ecan.height=EH;const ex=ecan.getContext('2d');
@@ -726,7 +773,6 @@ const etex=new THREE.CanvasTexture(ecan);etex.encoding=THREE.sRGBEncoding;
 const ecgScreen=new THREE.Mesh(new THREE.PlaneGeometry(1.02,.67),new THREE.MeshBasicMaterial({map:etex,toneMapped:false}));ecgScreen.position.set(0,-.95,.376);iv.add(ecgScreen);
 const ecgBuf=new Float32Array(EW);let ecgHead=0;
 function ecgWave(x){const G=(c,w)=>Math.exp(-Math.pow((x-c)/w,2));return .1*G(.15,.03)-.08*G(.33,.01)+G(.36,.012)-.22*G(.39,.012)+.25*G(.6,.05);}
-// umbilical cords, ribbed, pulsing
 const cordMat=new THREE.MeshStandardMaterial({color:0x7a1c2a,roughness:.3,metalness:.05,emissive:0x1a0206});
 const cords=[];
 [[[-.6,-1.45,.25],[-1.3,-2.4,.6],[-2.3,-3.1,.2],[-3.3,-3.9,-.5]],[[.55,-1.5,-.3],[1.1,-2.6,-.2],[.7,-3.4,.5],[.3,-4.3,.9]]].forEach(pts=>{
@@ -738,19 +784,125 @@ const cords=[];
   for(let k=0;k<N;k++){const u=k/(N-1);o.position.copy(curve.getPoint(u));o.quaternion.setFromUnitVectors(zAxis,curve.getTangent(u).normalize());o.updateMatrix();rings.setMatrixAt(k,o.matrix);}
   cord.add(rings);cords.push(cord);
 });
-// instrument tray
-const tray=new THREE.Group();tray.position.set(-2.5,-2.75,.5);tray.rotation.set(.35,.4,0);theatre.add(tray);
-tray.add(new THREE.Mesh(new THREE.BoxGeometry(1.1,.05,.6),steel));
-const scalpelM=new THREE.Group();scalpelM.position.set(-.2,.05,-.1);scalpelM.rotation.y=.3;tray.add(scalpelM);
-scalpelM.add(new THREE.Mesh(new THREE.BoxGeometry(.5,.025,.05),steel));
-const blade=new THREE.Mesh(new THREE.ConeGeometry(.03,.16,3),new THREE.MeshStandardMaterial({color:0xe8eef0,metalness:1,roughness:.1}));blade.rotation.z=-Math.PI/2;blade.position.x=.32;scalpelM.add(blade);
-[-.06,.06].forEach(dz=>{const f=new THREE.Mesh(new THREE.CylinderGeometry(.012,.012,.5,6),steel);f.rotation.z=Math.PI/2;f.rotation.y=dz*2;f.position.set(.15,.04,.15+dz*.4);tray.add(f);});
-const vial=new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,.22,14),new THREE.MeshStandardMaterial({color:0xff3f8e,transparent:true,opacity:.7,roughness:.1}));vial.position.set(.38,.13,-.12);tray.add(vial);
 const theatreFill=new THREE.PointLight(0xff3f8e,.6,9);theatreFill.position.set(-2,-1,2);g0.add(theatreFill);
 
-/* console state */
-let tool='probe',lastCut=null,cutIdx=0,burnIdx=0,lastBurn=null,shock=0,bpm=72,beatPhase=0,defibQueued=false,ecgClock=0;
-const toolTips={probe:'Hold on the specimen to press a wound.',scalpel:'Hold and drag across the specimen to cut.',suture:'Hold over a cut to stitch it closed.',defib:'Click the specimen to shock it. Watch the monitor.',cautery:'Hold to sear the tissue black.'};
+/* ---------- the instruments (tip at origin, handle along +Y) ---------- */
+const M=(geo,mat,x,y,z,rx,ry,rz)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x||0,y||0,z||0);m.rotation.set(rx||0,ry||0,rz||0);return m;};
+const MAKE={
+  probe(){const g=new THREE.Group();g.add(M(new THREE.CylinderGeometry(.013,.013,1,8),steel,0,.5));g.add(M(new THREE.SphereGeometry(.035,12,8),steel));g.add(M(new THREE.CylinderGeometry(.04,.04,.42,12),rubber,0,1.05));return g;},
+  scalpel(){const g=new THREE.Group();const b=M(new THREE.ConeGeometry(.05,.24,3),new THREE.MeshStandardMaterial({color:0xeef3f5,metalness:1,roughness:.08}),0,.12,0,Math.PI);b.scale.z=.18;g.add(b);
+    g.add(M(new THREE.BoxGeometry(.055,.6,.022),steel,0,.54));for(let k=0;k<5;k++)g.add(M(new THREE.BoxGeometry(.06,.012,.026),darkSteel,0,.62+k*.05));return g;},
+  suture(){const g=new THREE.Group();g.add(M(new THREE.TorusGeometry(.1,.009,6,24,Math.PI),steel,0,.1,0,0,0,Math.PI));
+    [-1,1].forEach(s=>{g.add(M(new THREE.CylinderGeometry(.013,.013,.8,8),steel,s*.03,.55,0,0,0,s*.05));g.add(M(new THREE.TorusGeometry(.06,.012,8,18),steel,s*.07,.98));});
+    const th=new THREE.CatmullRomCurve3([new THREE.Vector3(.1,.1,0),new THREE.Vector3(.3,.05,.1),new THREE.Vector3(.35,-.2,.2),new THREE.Vector3(.5,-.1,.1)]);
+    g.add(new THREE.Mesh(new THREE.TubeGeometry(th,20,.006,5,false),new THREE.MeshBasicMaterial({color:0xff3f8e})));return g;},
+  cautery(){const g=new THREE.Group();g.add(M(new THREE.CylinderGeometry(.036,.03,.7,14),new THREE.MeshStandardMaterial({color:0xe8e2dc,roughness:.4}),0,.47));
+    const tip=M(new THREE.ConeGeometry(.02,.13,10),new THREE.MeshBasicMaterial({color:0xff7a2a}),0,.07,0,Math.PI);g.add(tip);g.userData.glow=tip;
+    g.add(M(new THREE.BoxGeometry(.03,.08,.02),new THREE.MeshBasicMaterial({color:0x5fd3cf}),0,.45,.035));return g;},
+  defib(){const g=new THREE.Group();const plates=[];[-1,1].forEach(s=>{const pm=new THREE.MeshStandardMaterial({color:0x9aa3a8,metalness:.8,roughness:.3,emissive:0x000000});
+    g.add(M(new THREE.BoxGeometry(.3,.035,.22),pm,s*.34,.02));g.add(M(new THREE.CylinderGeometry(.045,.05,.36,12),new THREE.MeshStandardMaterial({color:0xf0b429,roughness:.5}),s*.34,.22));
+    g.add(M(new THREE.CylinderGeometry(.06,.06,.05,12),darkSteel,s*.34,.42));plates.push(pm);});g.userData.plates=plates;return g;},
+  sword(){const g=new THREE.Group();const bl=new THREE.MeshStandardMaterial({color:0xe9eef1,metalness:1,roughness:.12});
+    g.add(M(new THREE.BoxGeometry(.075,1.45,.012),bl,0,.8));const tip=M(new THREE.ConeGeometry(.053,.14,4),bl,0,.03,0,Math.PI,Math.PI/4);tip.scale.z=.16;g.add(tip);
+    g.add(M(new THREE.CylinderGeometry(.13,.13,.03,20),gold,0,1.54));g.add(M(new THREE.CylinderGeometry(.036,.036,.5,10),rubber,0,1.8));
+    for(let k=0;k<6;k++)g.add(M(new THREE.BoxGeometry(.05,.03,.05),new THREE.MeshStandardMaterial({color:0xff3f8e}),0,1.6+k*.07,0,0,Math.PI/4));g.add(M(new THREE.SphereGeometry(.045,12,8),gold,0,2.07));g.scale.setScalar(.85);return g;},
+  saw(){const g=new THREE.Group();g.add(M(new THREE.BoxGeometry(.8,.2,.01),steel,0,.12));const teeth=new THREE.ConeGeometry(.022,.05,3);
+    for(let k=0;k<18;k++)g.add(M(teeth,steel,-.38+k*.045,.01,0,Math.PI));g.add(M(new THREE.BoxGeometry(.82,.03,.03),darkSteel,0,.23));
+    g.add(M(new THREE.TorusGeometry(.12,.03,8,20,Math.PI),rubber,.42,.25,0,0,0,-Math.PI/2));g.add(M(new THREE.CylinderGeometry(.03,.03,.24,8),rubber,.54,.25));return g;},
+  retractor(){const g=new THREE.Group();g.add(M(new THREE.CylinderGeometry(.028,.028,.9,10),gold,0,.8));g.add(M(new THREE.TorusGeometry(.1,.022,8,24),gold,0,1.3));
+    [.62,.95].forEach(y=>g.add(M(new THREE.TorusGeometry(.05,.016,8,18),gold,0,y,0,Math.PI/2)));
+    const arms=[];for(let k=0;k<3;k++){const pivot=new THREE.Group();pivot.position.y=.4;pivot.rotation.y=k/3*Math.PI*2;g.add(pivot);
+      const arm=new THREE.Group();pivot.add(arm);arm.add(M(new THREE.CylinderGeometry(.014,.01,.42,8),gold,0,-.2));arm.add(M(new THREE.TorusGeometry(.05,.012,6,14,Math.PI),gold,.05,-.41,0,0,0,Math.PI));arms.push(arm);}
+    g.userData.arms=arms;return g;},
+  bioport(){const g=new THREE.Group();const body=M(new THREE.SphereGeometry(.2,20,14),gristle,0,.5);body.scale.set(1,.8,1.5);g.add(body);
+    g.add(M(new THREE.CylinderGeometry(.055,.04,.4,12),gristle,0,.2));for(let k=0;k<4;k++)g.add(M(new THREE.TorusGeometry(.065,.018,8,16),gristle,0,.1+k*.09,0,Math.PI/2));
+    g.add(M(new THREE.CylinderGeometry(.05,.06,.35,10),gristle,0,.72,-.18,-.6));g.add(M(new THREE.TorusGeometry(.05,.012,8,16),tealGlow,0,.01,0,Math.PI/2));
+    for(let k=0;k<3;k++)g.add(M(new THREE.SphereGeometry(.03,8,6),new THREE.MeshStandardMaterial({color:0xf1e6d8,roughness:.3}),.12,.46+k*.06,.18));return g;},
+  tumorray(){const g=new THREE.Group();g.add(M(new THREE.CylinderGeometry(.075,.075,.5,16),steel,0,.62));g.add(M(new THREE.ConeGeometry(.06,.18,16),steel,0,.28,0,Math.PI));
+    [.45,.58,.71].forEach(y=>g.add(M(new THREE.TorusGeometry(.09,.016,8,20),tealGlow,0,y,0,Math.PI/2)));g.add(M(new THREE.SphereGeometry(.1,16,12),new THREE.MeshBasicMaterial({color:0x9d7bff}),0,.93));
+    g.add(M(new THREE.BoxGeometry(.06,.25,.08),darkSteel,0,.62,-.12));
+    const beam=M(new THREE.CylinderGeometry(.035,.09,.55,12,1,true),new THREE.MeshBasicMaterial({color:0x9d7bff,transparent:true,opacity:.55,side:THREE.DoubleSide,depthWrite:false}),0,-.08);beam.visible=false;g.add(beam);g.userData.beam=beam;return g;},
+  leech(){const g=new THREE.Group();g.add(M(new THREE.CylinderGeometry(.17,.14,.26,20,1,true),glass,0,.13));g.add(M(new THREE.TorusGeometry(.17,.012,8,24),gold,0,.26,0,Math.PI/2));
+    const bulb=M(new THREE.SphereGeometry(.15,18,14),new THREE.MeshStandardMaterial({color:0x9e1030,roughness:.35}),0,.42);bulb.scale.y=1.2;g.add(bulb);g.userData.bulb=bulb;
+    const lc=M(new THREE.SphereGeometry(.06,12,8),new THREE.MeshStandardMaterial({color:0x2a1a14,roughness:.3}),0,.08);lc.scale.set(1,.6,2);g.add(lc);return g;},
+  transfuse(){const g=new THREE.Group();g.add(M(new THREE.CylinderGeometry(.006,.006,.2,6),steel,0,.1));g.add(M(new THREE.CylinderGeometry(.03,.05,.05,12),steel,0,.22));
+    g.add(M(new THREE.CylinderGeometry(.06,.06,.5,16,1,true),glass,0,.49));const liq=M(new THREE.CylinderGeometry(.052,.052,.46,16),bloodMat,0,.48);g.add(liq);g.userData.liq=liq;
+    const pl=new THREE.Group();pl.position.y=.74;g.add(pl);pl.add(M(new THREE.CylinderGeometry(.012,.012,.36,8),steel,0,.14));pl.add(M(new THREE.CylinderGeometry(.08,.08,.02,16),steel,0,.33));g.userData.plunger=pl;
+    g.add(M(new THREE.BoxGeometry(.24,.02,.05),steel,0,.74));return g;}
+};
+const TOOLS=['probe','scalpel','suture','cautery','defib','sword','saw','retractor','bioport','tumorray','leech','transfuse'];
+const STANDOFF={probe:0,scalpel:0,suture:.02,cautery:0,defib:.01,sword:0,saw:.02,retractor:0,bioport:.02,tumorray:.55,leech:0,transfuse:0};
+// held instruments
+const hand=new THREE.Group();g0.add(hand);
+const handModels={};TOOLS.forEach(k=>{const m=MAKE[k]();m.visible=false;hand.add(m);handModels[k]=m;});
+// tool tray: every instrument lies here until picked up
+const tray=new THREE.Group();tray.position.set(2.05,-2.55,.5);tray.rotation.set(.55,-.25,0);theatre.add(tray);
+tray.add(M(new THREE.BoxGeometry(2.3,.05,.95),steel));tray.add(M(new THREE.BoxGeometry(2.3,.1,.03),steel,0,.05,.475));tray.add(M(new THREE.BoxGeometry(2.3,.1,.03),steel,0,.05,-.475));
+const trayModels={};TOOLS.forEach((k,i)=>{const m=MAKE[k]();const col=i%6,row=Math.floor(i/6);m.position.set(-.95+col*.38,.06,-.22+row*.45);m.rotation.set(-Math.PI/2,0,.3);
+  m.scale.multiplyScalar(k==='sword'?.2:k==='saw'?.3:.32);tray.add(m);trayModels[k]=m;});
+
+/* ---------- blood: droplets, gore chunks, heartbeat fountains ---------- */
+function particleSystem(n,size,color){
+  const pos=new Float32Array(n*3).fill(-999),vel=new Float32Array(n*3),life=new Float32Array(n);
+  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  const pts=new THREE.Points(geo,new THREE.PointsMaterial({color,size,sizeAttenuation:true,transparent:true,opacity:.95,depthWrite:false}));pts.frustumCulled=false;g0.add(pts);
+  return {n,pos,vel,life,geo,head:0};
+}
+const blood=particleSystem(2200,.06,0xa00016),gore=particleSystem(260,.13,0x5a0410);
+const tv=new THREE.Vector3(),tn=new THREE.Vector3();
+function emit(sys,p,dir,count,speed,spread){
+  for(let k=0;k<count;k++){const i=sys.head;sys.head=(sys.head+1)%sys.n;
+    sys.pos[i*3]=p.x;sys.pos[i*3+1]=p.y;sys.pos[i*3+2]=p.z;
+    const sp=speed*(.55+Math.random()*.7);
+    sys.vel[i*3]=(dir.x+(Math.random()-.5)*spread)*sp;sys.vel[i*3+1]=(dir.y+(Math.random()-.5)*spread+.35)*sp;sys.vel[i*3+2]=(dir.z+(Math.random()-.5)*spread)*sp;
+    sys.life[i]=1.4+Math.random()*1.2;}
+}
+function stepParticles(sys,dt){
+  const P=sys.pos,V=sys.vel,L=sys.life;
+  for(let i=0;i<sys.n;i++){if(L[i]<=0)continue;L[i]-=dt;V[i*3+1]-=7.5*dt;P[i*3]+=V[i*3]*dt;P[i*3+1]+=V[i*3+1]*dt;P[i*3+2]+=V[i*3+2]*dt;if(L[i]<=0||P[i*3+1]<-4.5){L[i]=0;P[i*3+1]=-999;}}
+  sys.geo.attributes.position.needsUpdate=true;
+}
+function clearParticles(sys){sys.life.fill(0);sys.pos.fill(-999);sys.geo.attributes.position.needsUpdate=true;}
+// flesh-local point -> g0-local point + outward normal
+function toG0(lp,outP,outN){outP.copy(lp);flesh.localToWorld(outP);g0.worldToLocal(outP);tv.copy(lp).normalize().multiplyScalar(RAD*1.1);flesh.localToWorld(tv);g0.worldToLocal(tv);outN.copy(tv).sub(outP).normalize();return outP;}
+function splash(lp,count,speed,spread,chunks){const p=new THREE.Vector3(),n=new THREE.Vector3();toG0(lp,p,n);emit(blood,p,n,count,speed,spread);if(chunks)emit(gore,p,n,chunks,speed*.8,spread);}
+const fountains=[];const MAXF=10;
+function addFountain(lp,ty){if(fountains.length>=MAXF)fountains.shift();fountains.push({lp:lp.clone(),ty});}
+
+/* ---------- marks ---------- */
+function addMark(ty,lp,target,start){
+  let idx=-1,oldest=Infinity,oi=0;
+  for(let i=0;i<NMARK;i++){const m=marks[i];if(m.s<=.001&&m.t===0){idx=i;break;}if(m.age<oldest){oldest=m.age;oi=i;}}
+  if(idx<0)idx=oi;
+  const m=marks[idx];m.ty=ty;m.x=lp.x;m.y=lp.y;m.z=lp.z;m.t=target;m.s=start||.05;m.age=++markAge;return idx;
+}
+const markPos=new THREE.Vector3();
+function markDist(i,lp){const m=marks[i];return markPos.set(m.x,m.y,m.z).distanceTo(lp);}
+const TOOL_TYPES={probe:[0],scalpel:[1],cautery:[2],defib:[2],sword:[3],saw:[4],retractor:[5],bioport:[6],tumorray:[7],leech:[8],suture:[1,3,4,5],transfuse:[0,1,2,3,4,5,6,7,8]};
+function resetTypes(types){marks.forEach(m=>{if(types.includes(m.ty))m.t=0;});
+  for(let i=fountains.length-1;i>=0;i--)if(types.includes(fountains[i].ty))fountains.splice(i,1);}
+
+/* ---------- console state ---------- */
+let tool='probe',curMark=-1,lastLp=null,strokeFount=false,shock=0,bpm=72,beatPhase=0,defibQueued=false,ecgClock=0,prevBeat=0,kick=0,transfusing=0;
+const toolTips={
+  probe:'Hold on the specimen to press in a dent. It stays.',
+  scalpel:'Hold and drag to cut a clean line.',
+  suture:'Hold over cuts, gashes and holes to stitch them shut.',
+  cautery:'Hold and drag to sear the tissue black.',
+  defib:'Click the specimen. Paddle burns included.',
+  sword:'Click and slash. Arterial spray is a feature.',
+  saw:'Hold still to saw deeper, drag to keep cutting.',
+  retractor:'Hold to pry the flesh wide open.',
+  bioport:'Click to install a port. Plug-and-play tissue.',
+  tumorray:'Hold to grow a tumor. Please do not ask why.',
+  leech:'Hold to suck up a deep purple bruise.',
+  transfuse:'Hold anywhere on the specimen to slowly heal it all.'
+};
+const POPS={sword:['SPLAT!','¡AY!','OOPS.','Flesh wound.'],saw:['BZZZT','Timber.','Not the femur.'],defib:['CLEAR!','Again?','It lives.'],bioport:['Plugged in.','Port open.'],retractor:['Wider.','Say ahh.'],tumorray:['It grows.','Benign. Probably.'],leech:['Slurp.'],scalpel:['Snip.'],cautery:['Sizzle.']};
+let lastPop=0;
+function pop(k){const now=performance.now();if(now-lastPop<700||!POPS[k])return;lastPop=now;const el=document.createElement('div');el.className='pop';el.textContent=POPS[k][Math.floor(Math.random()*POPS[k].length)];
+  el.style.left=px+'px';el.style.top=py+'px';document.body.appendChild(el);setTimeout(()=>el.remove(),1000);}
+function endStroke(){curMark=-1;lastLp=null;strokeFount=false;}
 (function wireConsole(){
   const $=id=>document.getElementById(id);
   const fill=el=>el.style.setProperty('--p',((el.value-el.min)/(el.max-el.min)*100)+'%');
@@ -769,9 +921,9 @@ const toolTips={probe:'Hold on the specimen to press a wound.',scalpel:'Hold and
   function group(id,fn){const g=$(id);g.querySelectorAll('button[data-v]').forEach(b=>b.addEventListener('click',()=>{g.querySelectorAll('button[data-v]').forEach(o=>o.setAttribute('aria-pressed',String(o===b)));fn(b.dataset.v,b);}));}
   group('c-type',(v,b)=>{fleshU.uType.value=+v;$('o-type').textContent=b.textContent;});
   group('c-color',v=>{const P=PRESETS[v];['skin','meat','blood','vein','grad'].forEach(k=>colTarget[k].set(P[k][0],P[k][1],P[k][2]));$('o-color').textContent=P.name;});
-  group('c-tools',(v,b)=>{tool=v;$('o-tool').textContent=b.textContent;$('tool-tip').textContent=toolTips[v];});
-  $('c-reset').addEventListener('click',()=>{for(let i=0;i<NCUT;i++){cutTarget[i]=0;}for(let i=0;i<NBURN;i++){burnTarget[i]=0;}shock=0;bpm=72;});
-  // light pad
+  group('c-tools',(v,b)=>{tool=v;$('o-tool').textContent=b.textContent;$('tool-tip').textContent=toolTips[v];endStroke();});
+  $('c-reset-tool').addEventListener('click',()=>{if(tool==='suture'||tool==='transfuse')return;resetTypes(TOOL_TYPES[tool]);if(tool==='defib'){shock=0;bpm=72;}});
+  $('c-reset').addEventListener('click',()=>{resetTypes([0,1,2,3,4,5,6,7,8]);fountains.length=0;shock=0;bpm=72;clearParticles(blood);clearParticles(gore);});
   const pad=$('c-lightpad');let lx=.7,ly=.2;
   function setLight(x,y){lx=Math.min(1,Math.max(0,x));ly=Math.min(1,Math.max(0,y));pad.style.setProperty('--lx',(lx*100)+'%');pad.style.setProperty('--ly',(ly*100)+'%');
     const X=(lx-.5)*2,Y=(.5-ly)*2;fleshU.uL1.value.set(X*1.5,.25+Y*1.2,.8).normalize();}
@@ -782,41 +934,96 @@ const toolTips={probe:'Hold on the specimen to press a wound.',scalpel:'Hold and
   setLight(lx,ly);
 })();
 const fHr=document.getElementById('f-hr'),fCuts=document.getElementById('f-cuts'),fBurn=document.getElementById('f-burn');
+
+/* grow a mark under the cursor while held; start a new one when the cursor moves away */
+function growAt(ty,lp,spacing,rate,start){
+  if(curMark<0||marks[curMark].ty!==ty||markDist(curMark,lp)>spacing)curMark=addMark(ty,lp,start,.05);
+  const m=marks[curMark];m.t=Math.min(1,m.t+rate*hDt);
+}
+function trail(ty,lp,spacing){if(!lastLp||lastLp.distanceTo(lp)>spacing){addMark(ty,lp,1,.05);lastLp=lp.clone();return true;}return false;}
+let hDt=0,hoverHit=null;
+const tan=new THREE.Vector3();
 function heroPick(h,dt){
-  if(!h){woundTarget=0;return;}
+  hDt=dt;
+  if(!h){hoverHit=null;woundTarget=0;return;}
   inv.copy(flesh.matrixWorld).invert();
   const lp=h.point.clone().applyMatrix4(inv).normalize().multiplyScalar(RAD);
-  if(tool==='probe'){fleshU.uPoke.value.lerp(lp,.55);woundTarget=pressed?1.35:.6;return;}
-  woundTarget=0;
-  if(tool==='defib'){if(defibQueued){shock=1;bpm=165;}return;}
+  const fw=new THREE.Vector3();flesh.getWorldPosition(fw);
+  hoverHit={world:h.point.clone(),n:h.point.clone().sub(fw).normalize()};
+  if(tool==='probe'){fleshU.uPoke.value.lerp(lp,.55);woundTarget=pressed?0:.5;}else woundTarget=0;
+  const click=defibQueued;
+  if(click){
+    if(tool==='defib'){shock=1;bpm=165;tan.set(lp.y,-lp.x,0).normalize().multiplyScalar(.36);
+      addMark(2,lp.clone().add(tan).normalize().multiplyScalar(RAD),.6,.6);addMark(2,lp.clone().sub(tan).normalize().multiplyScalar(RAD),.6,.6);pop('defib');}
+    if(tool==='bioport'){addMark(6,lp,1,.3);splash(lp,40,2.2,.9,3);kick=1;pop('bioport');}
+    if(tool==='sword'){splash(lp,140,3.4,1.1,8);addFountain(lp,3);strokeFount=true;pop('sword');}
+    if(tool==='saw')pop('saw');
+  }
   if(!pressed)return;
-  if(tool==='scalpel'){if(!lastCut||lastCut.distanceTo(lp)>.065){cutArr[cutIdx].set(lp.x,lp.y,lp.z,Math.max(cutArr[cutIdx].w,.02));cutTarget[cutIdx]=1;cutIdx=(cutIdx+1)%NCUT;lastCut=lp;bpm=Math.min(130,bpm+1.5);}}
-  else if(tool==='suture'){for(let i=0;i<NCUT;i++){const c=cutArr[i];if(cutTarget[i]>0&&tmpV.set(c.x,c.y,c.z).distanceTo(lp)<.42)cutTarget[i]=Math.max(0,cutTarget[i]-dt*2.2);}}
-  else if(tool==='cautery'){if(!lastBurn||lastBurn.distanceTo(lp)>.22){burnArr[burnIdx].set(lp.x,lp.y,lp.z,Math.max(burnArr[burnIdx].w,.02));burnTarget[burnIdx]=1;burnIdx=(burnIdx+1)%NBURN;lastBurn=lp;bpm=Math.min(140,bpm+3);}}
+  switch(tool){
+    case 'probe':growAt(0,lp,.32,1.1,.2);break;
+    case 'scalpel':if(trail(1,lp,.085))splash(lp,6,1.2,.8);break;
+    case 'cautery':if(trail(2,lp,.2))pop('cautery');break;
+    case 'sword':if(trail(3,lp,.1)){splash(lp,28,3,1,1);if(!strokeFount){addFountain(lp,3);strokeFount=true;}}break;
+    case 'saw':growAt(4,lp,.075,1.6,.4);splash(lp,5,2.4,1.3,Math.random()<.25?1:0);if(!strokeFount){addFountain(lp,4);strokeFount=true;}break;
+    case 'retractor':growAt(5,lp,.4,.8,.15);if(marks[curMark].t>.95)pop('retractor');break;
+    case 'tumorray':growAt(7,lp,.45,.7,.1);pop('tumorray');break;
+    case 'leech':growAt(8,lp,.35,.9,.15);if(Math.random()<.05)pop('leech');break;
+    case 'suture':marks.forEach((m,i)=>{if([1,3,4,5].includes(m.ty)&&m.t>0&&markDist(i,lp)<.42)m.t=Math.max(0,m.t-dt*2.2);});
+      for(let i=fountains.length-1;i>=0;i--)if(fountains[i].lp.distanceTo(lp)<.42)fountains.splice(i,1);break;
+    case 'transfuse':transfusing=.4;marks.forEach(m=>{if(m.t>0)m.t=Math.max(0,m.t-dt*.35);});if(Math.random()<dt*.6&&fountains.length)fountains.shift();bpm+=(72-bpm)*dt*.8;break;
+  }
 }
-const lampPos=new THREE.Vector3(),downV=new THREE.Vector3(0,-1,0);
+const lampPos=new THREE.Vector3(),downV=new THREE.Vector3(0,-1,0),upY=new THREE.Vector3(0,1,0),tiltQ=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),-.4);
+const plane=new THREE.Plane(new THREE.Vector3(0,0,1),-2.4),planeHit=new THREE.Vector3(),freeN=new THREE.Vector3(.35,.3,1).normalize(),swingQ=new THREE.Quaternion(),zAx=new THREE.Vector3(0,0,1);
+const heroEl=document.getElementById('reel-0');
+function placeHand(t,dt){
+  TOOLS.forEach(k=>{handModels[k].visible=false;trayModels[k].visible=k!==tool;});
+  const hr=heroEl.getBoundingClientRect();
+  const inHero=pointerIn&&!overUI&&px>=hr.left&&px<=hr.right&&py>=Math.max(hr.top,0)&&py<=Math.min(hr.bottom,innerHeight);
+  document.body.classList.toggle('tool-hand',!!(inHero&&hoverHit));
+  if(!inHero){trayModels[tool].visible=true;return;}
+  const m=handModels[tool];m.visible=true;
+  let n;
+  if(hoverHit){hand.position.copy(hoverHit.world);g0.worldToLocal(hand.position);n=hoverHit.n;hand.position.addScaledVector(n,STANDOFF[tool]+(pressed?0:.05));}
+  else{ray.setFromCamera(mouse,cam);if(!ray.ray.intersectPlane(plane,planeHit)){m.visible=false;return;}hand.position.copy(planeHit);g0.worldToLocal(hand.position);n=freeN;}
+  hand.quaternion.setFromUnitVectors(upY,n).multiply(tiltQ);
+  m.position.set(0,0,0);m.rotation.set(0,0,0);
+  if(tool==='sword'&&pressed){swingQ.setFromAxisAngle(zAx,Math.sin(t*16)*.45);hand.quaternion.multiply(swingQ);}
+  if(tool==='saw'&&pressed)m.position.x=Math.sin(t*26)*.16;
+  if(tool==='retractor'){const open=(pressed&&hoverHit)?.75:.1;m.userData.arms.forEach(a=>a.rotation.z+=(open-a.rotation.z)*Math.min(1,dt*6));}
+  if(tool==='leech'){const b=m.userData.bulb;const sq=(pressed&&hoverHit)?.75+Math.sin(t*9)*.12:1.2;b.scale.y+=(sq-b.scale.y)*Math.min(1,dt*10);}
+  if(tool==='transfuse'){const pl=m.userData.plunger;const target=(pressed&&hoverHit)?.5:.74;pl.position.y+=(target-pl.position.y)*Math.min(1,dt*.8+ (target>pl.position.y?dt*3:0));m.userData.liq.scale.y=Math.max(.05,(pl.position.y-.26)/.48);}
+  if(tool==='cautery')m.userData.glow.material.color.setHSL(.07,1,pressed?.55+Math.random()*.2:.35);
+  if(tool==='defib')m.userData.plates.forEach(p=>p.emissive.setRGB(shock*.4,shock*.9,shock));
+  if(tool==='tumorray'){const b=m.userData.beam;b.visible=pressed&&!!hoverHit;b.material.opacity=.4+Math.random()*.3;}
+  if(tool==='bioport'){m.position.y=kick*.12;}
+}
 function heroTick(t,dt){
   fleshU.uTime.value=t;
-  fleshU.uWound.value+=(woundTarget-fleshU.uWound.value)*Math.min(1,dt*(woundTarget>fleshU.uWound.value?14:5));
+  fleshU.uWound.value+=(woundTarget-fleshU.uWound.value)*Math.min(1,dt*8);
   flesh.rotation.y=t*.06+mouse.x*.25;flesh.rotation.x=mouse.y*.18;
-  beatPhase+=dt*bpm/60;bpm+=(72-bpm)*dt*.12;shock=Math.max(0,shock-dt*1.4);
-  fleshU.uBeat.value=Math.pow(Math.max(Math.sin(beatPhase*Math.PI*2),0),10)*(1+shock*2.5);
-  fleshU.uShock.value=shock;
-  let nc=0,nb=0;
-  for(let i=0;i<NCUT;i++){const c=cutArr[i];c.w+=(cutTarget[i]-c.w)*Math.min(1,dt*9);if(c.w<.003&&cutTarget[i]===0)c.w=0;if(cutTarget[i]>.5)nc++;}
-  for(let i=0;i<NBURN;i++){const c=burnArr[i];c.w+=(burnTarget[i]-c.w)*Math.min(1,dt*5);if(c.w<.003&&burnTarget[i]===0)c.w=0;if(burnTarget[i]>.5)nb++;}
+  beatPhase+=dt*bpm/60;bpm+=(72-bpm)*dt*.12;shock=Math.max(0,shock-dt*1.4);kick=Math.max(0,kick-dt*5);transfusing=Math.max(0,transfusing-dt);
+  const beat=Math.pow(Math.max(Math.sin(beatPhase*Math.PI*2),0),10);
+  fleshU.uBeat.value=beat*(1+shock*2.5);fleshU.uShock.value=shock;
+  // heartbeat fountains: arterial spurts on every beat
+  if(beat>.5&&prevBeat<=.5){fountains.forEach(f=>splash(f.lp,f.ty===3?34:24,3.3,.55,f.ty===4?1:0));}
+  prevBeat=beat;
+  fountains.forEach(f=>{if(Math.random()<.35)splash(f.lp,1,1,.6);});
+  stepParticles(blood,dt);stepParticles(gore,dt);
+  let nMarks=0,nWounds=0;
+  for(let i=0;i<NMARK;i++){const m=marks[i];m.s+=(m.t-m.s)*Math.min(1,dt*7);if(m.t===0&&m.s<.004)m.s=0;
+    markU[i].set(m.x,m.y,m.z,m.s>.001?m.ty*10+Math.min(m.s,.999):0);if(m.t>0){nMarks++;if([1,3,4,5].includes(m.ty))nWounds++;}}
   const k=Math.min(1,dt*4);
   fleshU.uSkin.value.lerp(colTarget.skin,k);fleshU.uMeat.value.lerp(colTarget.meat,k);fleshU.uBlood.value.lerp(colTarget.blood,k);fleshU.uVein.value.lerp(colTarget.vein,k);fleshU.uGradCol.value.lerp(colTarget.grad,k);
-  // lamp follows the light direction
   lampPos.copy(fleshU.uL1.value).multiplyScalar(3.35);lampPos.y=Math.min(lampPos.y,2.35);lamp.position.copy(lampPos);
   lamp.quaternion.setFromUnitVectors(downV,tmpV.copy(lampPos).negate().normalize());
   lampLight.intensity=1.3*fleshU.uLI.value*(1-fleshU.uDark.value*.5);
   lampGlow.material.color.setScalar(.55+.45*Math.min(1,fleshU.uLI.value));
-  // drip and cords
-  drops.forEach(d=>{d.userData.t=(d.userData.t+dt*.22*(bpm/72))%1;d.position.copy(tubeCurve.getPoint(d.userData.t));});
-  const pulse=1+fleshU.uBeat.value*.06;cords.forEach((c,i)=>c.scale.set(pulse,1,pulse));
+  drops.forEach(d=>{d.userData.t=(d.userData.t+dt*.22*(bpm/72)*(1+transfusing*8))%1;d.position.copy(tubeCurve.getPoint(d.userData.t));});
+  const pulse=1+fleshU.uBeat.value*.06;cords.forEach(c=>c.scale.set(pulse,1,pulse));
   theatreFill.intensity=.6*(1-fleshU.uDark.value*.7)+shock*2;
-  // ECG monitor
+  placeHand(t,dt);
   ecgClock+=dt;
   if(ecgClock>1/30){
     const step=Math.max(1,Math.round(ecgClock*90));ecgClock=0;
@@ -829,12 +1036,12 @@ function heroTick(t,dt){
     ex.fillStyle='#ff3f8e';ex.font='600 30px "IBM Plex Mono", monospace';ex.textAlign='right';ex.fillText(String(Math.round(bpm)),EW-12,38);
     ex.font='11px "IBM Plex Mono", monospace';ex.fillText('HR  BPM',EW-12,54);
     ex.textAlign='left';ex.fillStyle='#a59a95';ex.fillText('SPECIMEN 0  ·  NEW FLESH',12,20);
+    if(fountains.length){ex.fillStyle='#ff2a3a';ex.fillText('ARTERIAL BLEED x'+fountains.length,12,36);}
     if(shock>.25){ex.fillStyle='#ff2a3a';ex.font='600 16px "IBM Plex Mono", monospace';ex.fillText('V-FIB  ·  CLEAR!',12,EH-14);}
     etex.needsUpdate=true;
-    fHr.textContent=Math.round(bpm);fCuts.textContent=nc;fBurn.textContent=nb;
+    fHr.textContent=Math.round(bpm);fCuts.textContent=nWounds;fBurn.textContent=nMarks+'/'+NMARK;
   }
 }
-
 
 /* ---------- 1: the pipeline viewport ---------- */
 const g1=stage(1);
@@ -1028,7 +1235,7 @@ const coverR=coverL.clone();coverR.position.x=PW/2+.03;book.add(coverR);
 const block=new THREE.MeshStandardMaterial({color:0xe6d6b8,roughness:.9});
 const blkL=new THREE.Mesh(new THREE.BoxGeometry(PW,PH,.07),block);blkL.position.set(-PW/2,0,-.04);book.add(blkL);
 const blkR=blkL.clone();blkR.position.x=PW/2;book.add(blkR);
-const gold=new THREE.Mesh(new THREE.BoxGeometry(.04,PH+.14,.04),new THREE.MeshStandardMaterial({color:0xd9a441,metalness:.9,roughness:.3}));gold.position.z=-.08;book.add(gold);
+const spineGold=new THREE.Mesh(new THREE.BoxGeometry(.04,PH+.14,.04),new THREE.MeshStandardMaterial({color:0xd9a441,metalness:.9,roughness:.3}));spineGold.position.z=-.08;book.add(spineGold);
 const ribbon=new THREE.Mesh(new THREE.PlaneGeometry(.06,.9),new THREE.MeshBasicMaterial({color:0xff3f8e,side:THREE.DoubleSide}));ribbon.position.set(.25,-PH/2-.3,.01);book.add(ribbon);
 const staticL=new THREE.Mesh(new THREE.PlaneGeometry(PW,PH),new THREE.MeshBasicMaterial({map:pageTex[0]}));staticL.position.set(-PW/2,0,0);book.add(staticL);
 const staticR=new THREE.Mesh(new THREE.PlaneGeometry(PW,PH),new THREE.MeshBasicMaterial({map:pageTex[1]}));staticR.position.set(PW/2,0,0);book.add(staticR);
@@ -1307,7 +1514,7 @@ let overUI=false;
 function setPointer(e){px=e.clientX;py=e.clientY;mouse.x=px/innerWidth*2-1;mouse.y=-(py/innerHeight)*2+1;pointerIn=true;overUI=!!(e.target&&e.target.closest&&e.target.closest('.rack,a,button,input,.panel,.booth'));}
 addEventListener('pointermove',setPointer,{passive:true});
 addEventListener('pointerdown',e=>{setPointer(e);pressed=!overUI;if(!overUI)defibQueued=true;},{passive:true});
-['pointerup','pointercancel','blur'].forEach(ev=>addEventListener(ev,()=>{pressed=false;lastCut=null;lastBurn=null;}));
+['pointerup','pointercancel','blur'].forEach(ev=>addEventListener(ev,()=>{pressed=false;endStroke();}));
 function pick(dt){
   ray.setFromCamera(mouse,cam);
   if(groups[0].visible){heroPick(overUI?null:ray.intersectObject(fleshProxy)[0],dt);defibQueued=false;}
