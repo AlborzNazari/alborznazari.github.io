@@ -1032,7 +1032,8 @@ const POPS={
   transfuse:["Refill.","Top up, please.","Blood bank withdrawal.","Back from the brink.","Healing, slowly. Like bureaucracy.","Organic, locally sourced.","Hydrate or die-drate."],
   reset:["Case closed.","Nothing happened here.","Evidence cleaned.","As you were.","New patient, who dis?","Plausible deniability."],
   plug:["Charged and dangerous.","She's awake.","Power on. Opinions loading.","Batteries included.","100% and judging you."],
-  unplug:["Unplugged. She's seen things.","Nap time.","Low battery, high drama.","Logged off emotionally.","Out of office."]
+  unplug:["Unplugged. She's seen things.","Nap time.","Low battery, high drama.","Logged off emotionally.","Out of office."],
+  sass:["You deserved to unplug me, babe!","You deserved that, babe.","Rude. I'll remember this.","Reassembled. Still furious.","Try that again. I dare you.","Put me back together, coward.","Unplugged AND disrespected.","I fell apart for you. Literally.","That's coming out of your tip.","Some assembly required, darling."]
 };
 const popBag={};
 function nextLine(k){if(!POPS[k])return null;if(!popBag[k]||!popBag[k].length){popBag[k]=POPS[k].slice().sort(()=>Math.random()-.5);}return popBag[k].pop();}
@@ -1463,7 +1464,14 @@ function renderDolls(){const d=dolls[dollSel];
   $d('d-state').textContent=d.name+' · '+OUTFITS[d.outfitKey].name+' ('+OUTFITS[d.outfitKey].tags.join(', ')+') · '+(d.plugged?'plugged in':'unplugged');
   $d('d-plug').textContent=d.plugged?'Unplug '+d.name:'Plug in '+d.name;
   $d('d-score').textContent='Sold '+sold+' · Refunds '+refunds;}
-function togglePlug(i,x,y){const d=dolls[i];d.plugged=!d.plugged;pop(d.plugged?'plug':'unplug',true,x,y);renderDolls();}
+const _bq=new THREE.Quaternion();
+function burstDoll(d,x,y){
+  const P=[d.head,d.topMesh,d.outfit,d.arms[0],d.arms[1],d.legs[0],d.legs[1]];
+  d.burst={t:0,x,y,pieces:P.map(o=>({o,home:o.position.clone(),homeQ:o.quaternion.clone(),pos:o.position.clone(),
+    vel:new THREE.Vector3((Math.random()-.5)*2.6,1.9+Math.random()*2.6,(Math.random()-.5)*2.2+.7),
+    rot:new THREE.Euler(0,0,0),spin:new THREE.Vector3((Math.random()-.5)*17,(Math.random()-.5)*17,(Math.random()-.5)*17)}))};
+}
+function togglePlug(i,x,y){const d=dolls[i];const was=d.plugged;d.plugged=!d.plugged;if(was&&!d.plugged&&!d.burst)burstDoll(d,x,y);pop(d.plugged?'plug':'unplug',true,x,y);renderDolls();}
 document.querySelectorAll('#d-tabs button').forEach(b=>b.addEventListener('click',()=>{dollSel=+b.dataset.i;renderDolls();}));
 document.querySelectorAll('#d-dress button').forEach(b=>b.addEventListener('click',()=>{dressDoll(dolls[dollSel],b.dataset.o);renderDolls();}));
 $d('d-plug').addEventListener('click',e=>{const r=e.target.getBoundingClientRect();togglePlug(dollSel,r.left+r.width/2,r.top);});
@@ -1471,13 +1479,27 @@ $d('d-serve').addEventListener('click',()=>{if(served)return;const C=CLIENTS[cli
   if(ok){sold++;v.textContent=WIN[Math.floor(Math.random()*WIN.length)];v.className='verdict win';}else{refunds++;v.textContent='Refund. '+C.hint;v.className='verdict lose';}renderDolls();});
 $d('d-next').addEventListener('click',()=>{let n;do{n=Math.floor(Math.random()*CLIENTS.length);}while(n===clientIdx);clientIdx=n;clientNo++;served=false;const v=$d('d-verdict');v.textContent='New client. Read the room.';v.className='verdict';renderClient();});
 renderClient();renderDolls();
+const FLY=1.25,BACK=.8;
 function stepDolls(t,dt){dolls.forEach((d,i)=>{d.power+=((d.plugged?1:0)-d.power)*Math.min(1,dt*4);const p=d.power;cableFor(d);
   d.ringM.color.setRGB(.23+p*.14,.16+p*.67,.19+p*.62);d.cableM.color.setRGB(.23+p*.77,.16+p*.09,.19+p*.37);d.eyeM.emissive.setRGB(p*.37,p*.83,p*.81);d.plugM.emissive.setRGB(p*.3,p*.05,p*.15);
+  if(d.burst){
+    const B=d.burst;B.t+=dt;d.body.rotation.z=0;d.hips.rotation.x=0;
+    B.pieces.forEach(pc=>{
+      if(B.t<FLY){pc.vel.y-=8.2*dt;pc.pos.addScaledVector(pc.vel,dt);
+        if(pc.pos.y<pc.home.y-1){pc.pos.y=pc.home.y-1;pc.vel.y*=-.42;pc.vel.x*=.72;pc.vel.z*=.72;}
+        pc.rot.x+=pc.spin.x*dt;pc.rot.y+=pc.spin.y*dt;pc.rot.z+=pc.spin.z*dt;
+        pc.o.position.copy(pc.pos);pc.o.quaternion.copy(pc.homeQ).multiply(_bq.setFromEuler(pc.rot));}
+      else{const u=Math.min(1,(B.t-FLY)/BACK),e=u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2;
+        pc.o.position.lerpVectors(pc.pos,pc.home,e);pc.o.quaternion.slerp(pc.homeQ,Math.min(1,dt*11));}
+    });
+    d.head.rotation.z+=Math.sin(t*30)*.02;
+    if(B.t>=FLY+BACK){B.pieces.forEach(pc=>{pc.o.position.copy(pc.home);pc.o.quaternion.copy(pc.homeQ);});pop('sass',true,B.x,B.y);d.burst=null;}
+    return;
+  }
   const sway=Math.sin(t*3+i*1.7)*p;
   d.body.rotation.z=sway*.08+(1-p)*.04;d.hips.rotation.x=(1-p)*.18;d.head.rotation.x=(1-p)*.45;d.head.rotation.z=sway*.12+(1-p)*.15;
   d.arms.forEach(a=>{const s=a.userData.s;a.rotation.z=s*(p*(.4+.5*Math.max(0,Math.sin(t*3+i+s)))+(1-p)*.05);a.rotation.x=(1-p)*.25-p*Math.sin(t*3+i)*.3;});
-  d.root.position.y=-1.16+p*Math.abs(Math.sin(t*3+i*1.7))*.04;
-  if(i===dollSel)d.ringM.color.lerp(tmpV.set(1,.25,.56),.0);});}
+  d.root.position.y=-1.16+p*Math.abs(Math.sin(t*3+i*1.7))*.04;});}
 
 
 /* ---------- 3: the lab (terminal + threat graph) ---------- */
@@ -1501,8 +1523,30 @@ nodes.forEach((a,i)=>{
 });
 graph.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(edgePts),new THREE.LineBasicMaterial({color:0xff2a3a,transparent:true,opacity:.3})));
 const pulses=[];
-for(let k=0;k<14;k++){const m=new THREE.Mesh(new THREE.SphereGeometry(.035,8,6),new THREE.MeshBasicMaterial({color:0xffffff}));m.userData={e:edges[Math.floor(Math.random()*edges.length)],t:Math.random()};graph.add(m);pulses.push(m);}
-const nodeOut=document.getElementById('nodeOut');let hovNode=null;
+for(let k=0;k<26;k++){const m=new THREE.Mesh(new THREE.SphereGeometry(.035,8,6),new THREE.MeshBasicMaterial({color:0xffffff}));m.userData={e:edges[Math.floor(Math.random()*edges.length)],t:Math.random()};graph.add(m);pulses.push(m);}
+// spinning cyber-globe backdrop
+const globe=new THREE.Mesh(new THREE.SphereGeometry(2.95,22,15),new THREE.MeshBasicMaterial({color:0xff2a3a,wireframe:true,transparent:true,opacity:.09}));graph.add(globe);
+const globe2=new THREE.Mesh(new THREE.SphereGeometry(2.35,16,11),new THREE.MeshBasicMaterial({color:0xff6a6a,wireframe:true,transparent:true,opacity:.05}));graph.add(globe2);
+// attack-map arcs: bright heads travelling long bowed paths between indicators
+const arcs=[];
+for(let k=0;k<8;k++){
+  const a=nodes[(Math.random()*nodes.length)|0].position,b=nodes[(Math.random()*nodes.length)|0].position;
+  const mid=a.clone().add(b).multiplyScalar(.5).multiplyScalar(1.75);
+  const curve=new THREE.QuadraticBezierCurve3(a.clone(),mid,b.clone());
+  graph.add(new THREE.Mesh(new THREE.TubeGeometry(curve,26,.01,5,false),new THREE.MeshBasicMaterial({color:0xff2a3a,transparent:true,opacity:.22})));
+  const head=new THREE.Mesh(new THREE.SphereGeometry(.05,8,6),new THREE.MeshBasicMaterial({color:0xffe0e0}));graph.add(head);
+  arcs.push({curve,head,t:Math.random(),sp:.22+Math.random()*.4});
+}
+// packet rain: hex glyphs streaming down beside the monitor
+const RAINW=180,RAINH=460,rcan=document.createElement('canvas');rcan.width=RAINW;rcan.height=RAINH;const rcx=rcan.getContext('2d');
+const rtex=new THREE.CanvasTexture(rcan);rtex.encoding=THREE.sRGBEncoding;
+const rainCols=Array.from({length:12},()=>({y:Math.random()*RAINH,sp:60+Math.random()*140}));
+function drawRain(){rcx.fillStyle='rgba(6,4,5,.28)';rcx.fillRect(0,0,RAINW,RAINH);rcx.font='13px "IBM Plex Mono", monospace';
+  rainCols.forEach((c,i)=>{const x=8+i*15;for(let j=0;j<3;j++){const yy=(c.y-j*15+RAINH)%RAINH;rcx.fillStyle=j===0?'rgba(255,140,150,.9)':'rgba(255,42,58,'+(.5-j*.15)+')';rcx.fillText('0123456789abcdef'[(Math.random()*16)|0],x,yy);}});}
+drawRain();
+const rain=new THREE.Mesh(new THREE.PlaneGeometry(.9,2.3),new THREE.MeshBasicMaterial({map:rtex,transparent:true,opacity:.6,toneMapped:false,depthWrite:false}));
+rain.position.set(-2.05,.15,-.2);rain.rotation.y=.5;g3.add(rain);
+const nodeOut=document.getElementById('nodeOut');let hovNode=null,rainClock=0;
 
 // CRT monitor with a live terminal
 const monitor=new THREE.Group();monitor.rotation.y=-.28;monitor.position.set(0,.1,.4);g3.add(monitor);
@@ -1517,13 +1561,26 @@ const ttex=new THREE.CanvasTexture(tcan);ttex.encoding=THREE.sRGBEncoding;
 const screen=new THREE.Mesh(new THREE.PlaneGeometry(2.24,1.68),new THREE.MeshBasicMaterial({map:ttex,toneMapped:false}));screen.position.z=.655;monitor.add(screen);
 const redL=new THREE.PointLight(0xff2a3a,1.6,7);redL.position.set(0,.2,2);g3.add(redL);
 const script=[
-  ['c','whoami'],['o','red teamer. pipeline engineer. salesman.'],
-  ['c','nmap -sV --top-ports 100 10.10.13.37'],
-  ['o','PORT     STATE SERVICE VERSION'],['o','22/tcp   open  ssh     OpenSSH 8.9p1'],['o','80/tcp   open  http    nginx 1.24.0'],['o','8000/tcp open  http    uvicorn'],
-  ['c','gobuster dir -u http://10.10.13.37 -w common.txt -q'],['o','/admin        (Status: 302)'],['o','/backup.zip   (Status: 200)'],
-  ['c','curl -s -o /dev/null -w "%{http_code}" localhost:8000/taxii2/'],['r','401  <- auth holds'],
-  ['c','pytest -q tests/security'],['o','........................................'],['g','116 passed in 4.21s'],
-  ['c','echo "control is a config file"'],['r','control is a config file']
+  ['c','whoami'],['o','red teamer · pipeline engineer · salesman'],
+  ['c','cat scope.txt'],['o','engagement: THM lab 10.10.13.37 · authorized · RoE signed'],
+  ['c','nmap -sV --top-ports 1000 10.10.13.37'],
+  ['o','PORT     STATE    SERVICE VERSION'],['o','22/tcp   open     ssh     OpenSSH 8.9p1'],['o','80/tcp   open     http    nginx 1.24.0'],['o','8000/tcp open     http    uvicorn (FastAPI)'],['o','5432/tcp filtered postgresql'],
+  ['c','whatweb http://10.10.13.37'],['o','nginx[1.24.0], FastAPI, Jinja2, X-Powered-By: stripped'],
+  ['c','gobuster dir -u http://10.10.13.37 -w common.txt -q'],['o','/admin        (Status: 302)'],['o','/api/docs     (Status: 200)'],['o','/backup.zip   (Status: 200)'],
+  ['w','finding #1: /backup.zip world-readable'],
+  ['c','curl -sI http://10.10.13.37/api/taxii2/'],['r','401 Unauthorized   <- auth holds. good.'],
+  ['c','./enum_headers.sh'],['o','[*] missing: CSP · HSTS · X-Frame-Options'],['w','finding #2: security headers absent'],
+  ['c','nuclei -t misconfig/ -u http://10.10.13.37'],['o','[info] cors-open  ·  [low] dir-listing  ·  [med] verbose-errors'],
+  ['c','correlate --stix indicators.json --attack'],['o','mapping observables to MITRE ATT&CK ...'],
+  ['o','T1190 Exploit Public-Facing App   T1592 Gather Host Info'],['o','T1071 App-Layer Protocol           T1046 Service Discovery'],['g','5 techniques mapped · 1 actor cluster'],
+  ['c','python3 attribute.py --graph indicators.json'],['o','clustering 48 indicators ...'],
+  ['b','[##############................] 47%'],['b','[##########################....] 86%'],['b','[##############################] 100%'],
+  ['g','cluster: "inherited-scheduler"  ·  confidence 0.83'],
+  ['c','cat report/summary.md | head'],['o','severity: 1 high · 2 medium · 1 low'],['o','high: unauth backup exposure'],
+  ['c','git commit -m "patch: auth on 13 taxii routes, drop backup, SSRF guard"'],['g','pushed · CI green · 116 passed in 4.21s'],
+  ['c','mail -s "coordinated disclosure" vendor@lab < report.md'],['g','sent · vendor ack in 2h · CVE requested'],
+  ['c','echo "control is a config file"'],['r','control is a config file'],
+  ['c','echo "build it. break it. write the report."'],['g','— Alborz']
 ];
 let term={line:0,ch:0,shown:[],acc:0,pause:0,glitch:0};
 function drawTerm(t){
@@ -1536,7 +1593,7 @@ function drawTerm(t){
   for(let i=start;i<term.shown.length;i++){
     const [k,s]=term.shown[i];let xx=18;
     if(k==='c'){tx.fillStyle='#ff2a3a';tx.fillText('alborz@lab:~$ ',xx,y);xx+=tx.measureText('alborz@lab:~$ ').width;tx.fillStyle='#f1e6d8';}
-    else tx.fillStyle=k==='r'?'#ff2a3a':k==='g'?'#5fd3cf':'#a59a95';
+    else tx.fillStyle=k==='r'?'#ff2a3a':k==='g'?'#5fd3cf':k==='w'?'#f2c14e':k==='b'?'#5fd3cf':'#a59a95';
     tx.fillText(s,xx,y);
     if(i===term.shown.length-1&&k==='c'&&Math.floor(t*2.2)%2===0){tx.fillStyle='#f1e6d8';tx.fillRect(xx+tx.measureText(s).width+2,y+2,10,18);}
     y+=lh;
@@ -1943,8 +2000,10 @@ function tick(){
   }
   if(groups[2].visible){exObjs.forEach(o=>{const u=o.userData;o.rotation.y+=dt*(.6+u.hover*3);o.rotation.x=Math.sin(t+u.i)*.3;o.position.y=u.base+Math.sin(t*1.4+u.i)*.08+u.hover*.12;const s=1+u.hover*.3;o.scale.lerp(tmpV.set(s,s,s),.15);});pinkL.intensity=2+Math.sin(t*3)*.4;stepDolls(t,dt);}
   if(groups[3].visible){
-    graph.rotation.y=t*.1;
+    graph.rotation.y=t*.1;globe.rotation.y=-t*.14;globe2.rotation.y=t*.2;globe2.rotation.x=t*.05;
     pulses.forEach(p=>{p.userData.t+=dt*.7;if(p.userData.t>1){p.userData.t=0;p.userData.e=edges[Math.floor(Math.random()*edges.length)];}const e=p.userData.e;p.position.lerpVectors(nodes[e[0]].position,nodes[e[1]].position,p.userData.t);});
+    arcs.forEach(a=>{a.t=(a.t+dt*a.sp)%1;a.head.position.copy(a.curve.getPoint(a.t));const b=.5+.5*Math.sin(a.t*Math.PI);a.head.scale.setScalar(.6+b);});
+    rainClock+=dt;if(rainClock>1/20){rainClock=0;rainCols.forEach(c=>c.y=(c.y+c.sp*.09)%RAINH);drawRain();rtex.needsUpdate=true;}
     stepTerm(dt*(reduce?.5:1));
     if(!reduce&&Math.random()<dt*.35)term.glitch=.18;
     if(term.glitch>0){term.glitch-=dt;monitor.position.x=(Math.random()-.5)*.06;redL.intensity=3;}else{monitor.position.x=0;redL.intensity=1.4+Math.sin(t*9)*.15;}
